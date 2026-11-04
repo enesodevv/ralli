@@ -8,6 +8,10 @@
 - [x] Analitik altyapısı: olaylar yalnızca cihaz günlüğüne yazılıyor. MetricKit çökme ve donma teşhisleri bağlı.
 - [x] Sağlık uyarısı her çalışmanın detayında görünür.
 - [x] Gizlilik politikası, App Store metinleri ve App Privacy cevapları taslak olarak hazır.
+- [x] Uygulama içi Hakkında sayfası: gizlilik politikası (internetsiz okunabilir), izin ayarları, güvenlik, içerik kaynakları ve bağımsızlık beyanı, sürüm (Yönerge 5.1.1).
+- [x] Solak oyuncu desteği (tercih + animasyonlar + kort şemaları).
+- [x] 6 dil: İngilizce, Türkçe, İspanyolca, Almanca, Fransızca, İtalyanca (arayüz, 17 çalışma, animasyon metinleri, gizlilik, izin açıklamaları, App Store metinleri).
+- [ ] Destek e-postası: gerçek bir adres olunca `AboutView.swift` içindeki `AppLinks.supportEmail` alanına yaz.
 
 ## Senin yapman gerekenler
 1. **Apple Developer Program** üyeliği (yıllık 99 $). Bireysel ya da şirket olarak; şirket adı mağazada görünür.
@@ -22,5 +26,6 @@
 
 ## Faz 0'dan sonra (Faz 1–2)
 - Analitik servisi seçimi (gizlilik öncelikli; ör. TelemetryDeck) ve bunun App Privacy etiketine yansıtılması.
-- iCloud yedekleme, solak modu, karanlık mod, düzgün çoğul kuralları.
-- Abonelik (StoreKit 2), programlar, 40+ çalışma, yeni diller (ES, DE, FR, IT).
+- iCloud yedekleme, karanlık mod.
+- Abonelik (StoreKit 2), programlar, 40+ çalışma; sonra Japonca ve Brezilya Portekizcesi.
+- Yeni dillerin ana dili konuşan, tenis bilen biri tarafından okunması.

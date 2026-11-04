@@ -1,7 +1,7 @@
 name: Ralli
 options:
   developmentLanguage: en
-  knownRegions: [en, tr]
+  knownRegions: [en, tr, es, de, fr, it]
   bundleIdPrefix: com.ralli
   deploymentTarget:
     iOS: '17.0'

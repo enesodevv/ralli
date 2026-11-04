@@ -14,6 +14,12 @@ struct PlayerPreferencesView: View {
                         ForEach(focuses, id: \.self) { Text(L10n.text($0)).tag($0) }
                     }
                 }
+                Section(L10n.text("setup.hand")) {
+                    Picker(L10n.text("setup.hand"), selection: Binding(get: { value.handedness ?? "right" }, set: { value.handedness = $0 })) {
+                        Text(L10n.text("setup.hand.right")).tag("right")
+                        Text(L10n.text("setup.hand.left")).tag("left")
+                    }.pickerStyle(.segmented)
+                }
                 Section(L10n.text("setup.mode")) {
                     Picker(L10n.text("setup.mode"), selection: $value.mode) {
                         Text(L10n.text("practice.solo")).tag("solo")

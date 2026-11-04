@@ -78,3 +78,111 @@
 6. "Neyin değiştiğini gör" — son 7 gün ve gelişim
 
 **Önizleme videosu (15–30 sn):** not → kort modu → 3B servis yavaş çekim → gelişim.
+
+---
+
+## Español (España)
+- **Nombre (29/30):** Ralli: Entrenamiento de tenis
+- **Subtítulo (28/30):** Tu clase, llevada a la pista
+- **Palabras clave (94/100):** `tenis,ejercicios,saque,derecha,revés,volea,remate,clase,notas,pista,juego de pies,temporizador`
+- **Texto promocional:** Guarda el consejo de tu entrenador, practícalo con una sesión clara y mira qué cambia. Novedad: animaciones 3D de los golpes a cámara lenta.
+- **Descripción:**
+
+  Ralli convierte tu clase de tenis en práctica que se queda.
+
+  GUARDA EL CONSEJO QUE IMPORTA
+  Dilo en voz alta al salir de clase. Ralli lo convierte en una nota y te lo recuerda antes de tu próxima sesión.
+
+  LLÉVALO A LA PISTA
+  Elige una sesión corta que encaje con tu tiempo, tu nivel y tu formato: solo, con compañero o contra el frontón. Pasos claros, un temporizador grande que se lee al sol y un sonido y una vibración al final de cada paso, para que el móvil pueda quedarse en la bolsa.
+
+  MIRA CÓMO SE HACE
+  Animaciones 3D muestran el orden y el ritmo de cada golpe (derecha, revés a dos manos, saque, volea, remate y split step) desde tres ángulos de cámara y a cámara lenta. También para zurdos.
+
+  MIRA QUÉ CAMBIA
+  Sigue los días que entrenas y repite pruebas sencillas. Sin puntuaciones falsas ni culpa por los días que faltas.
+
+  PRIVACIDAD DESDE EL DISEÑO
+  Sin cuenta. Tus notas se quedan en tu iPhone.
+
+  Ralli no sustituye a un entrenador ni a un consejo médico. Calienta y para si sientes dolor.
+
+## Deutsch
+- **Name (21/30):** Ralli: Tennistraining
+- **Untertitel (26/30):** Deine Stunde auf dem Platz
+- **Keywords (99/100):** `tennis,training,übungen,aufschlag,vorhand,rückhand,volley,schmetterball,trainer,notizen,platz,timer`
+- **Werbetext:** Halte den Tipp deines Trainers fest, übe ihn mit einer klaren Einheit und sieh, was sich verändert. Neu: 3D-Schlaganimationen in Zeitlupe.
+- **Beschreibung:**
+
+  Ralli macht aus deiner Tennisstunde Training, das hängen bleibt.
+
+  HALTE DEN TIPP FEST, DER ZÄHLT
+  Sprich ihn nach der Stunde einfach aus. Ralli macht daraus eine Notiz und erinnert dich vor deiner nächsten Einheit daran.
+
+  NIMM IHN MIT AUF DEN PLATZ
+  Wähle eine kurze Einheit, die zu deiner Zeit, deinem Niveau und deinem Setup passt: allein, mit Partner oder an der Wand. Klare Schritte, ein großer Timer, der auch in der Sonne lesbar ist, und Ton plus Vibration am Ende jedes Schritts – dein iPhone kann in der Tasche bleiben.
+
+  SO GEHT’S
+  3D-Animationen zeigen Reihenfolge und Rhythmus jedes Schlags (Vorhand, beidhändige Rückhand, Aufschlag, Volley, Schmetterball und Split-Step) aus drei Kamerawinkeln und in Zeitlupe. Auch für Linkshänder.
+
+  SIEH, WAS SICH VERÄNDERT
+  Verfolge deine Trainingstage und wiederhole einfache Tests. Keine erfundenen Punkte, kein schlechtes Gewissen für verpasste Tage.
+
+  DATENSCHUTZ VON ANFANG AN
+  Kein Konto. Deine Notizen bleiben auf deinem iPhone.
+
+  Ralli ersetzt weder Trainer noch ärztlichen Rat. Wärm dich auf und hör auf, wenn du Schmerzen spürst.
+
+## Français
+- **Nom (27/30) :** Ralli : entraînement tennis
+- **Sous-titre (23/30) :** Ton cours, sur le court
+- **Mots-clés (94/100) :** `tennis,entraînement,exercices,service,coup droit,revers,volée,smash,cours,notes,court,minuteur`
+- **Texte promotionnel :** Note le conseil de ton entraîneur, travaille-le avec une séance claire et vois ce qui change. Nouveau : animations 3D des coups au ralenti.
+- **Description :**
+
+  Ralli transforme ton cours de tennis en entraînement qui reste.
+
+  GARDE LE CONSEIL QUI COMPTE
+  Dis-le à voix haute après ton cours. Ralli en fait une note et te le rappelle avant ta prochaine séance.
+
+  EMPORTE-LE SUR LE COURT
+  Choisis une séance courte adaptée à ton temps, ton niveau et ton format : seul, avec un partenaire ou contre un mur. Des étapes claires, un grand minuteur lisible au soleil, et un son et une vibration à la fin de chaque étape : ton téléphone peut rester dans le sac.
+
+  VOIS COMMENT FAIRE
+  Des animations 3D montrent l’ordre et le rythme de chaque coup (coup droit, revers à deux mains, service, volée, smash et split-step) sous trois angles de caméra et au ralenti. Aussi pour les gauchers.
+
+  VOIS CE QUI CHANGE
+  Suis tes jours d’entraînement et répète des tests simples. Pas de faux scores, pas de culpabilité pour les jours manqués.
+
+  LA CONFIDENTIALITÉ D’ABORD
+  Pas de compte. Tes notes restent sur ton iPhone.
+
+  Ralli ne remplace ni un entraîneur ni un avis médical. Échauffe-toi et arrête-toi si tu as mal.
+
+## Italiano
+- **Nome (25/30):** Ralli: allenamento tennis
+- **Sottotitolo (28/30):** La lezione, portata in campo
+- **Parole chiave (89/100):** `tennis,allenamento,esercizi,servizio,dritto,rovescio,volée,smash,lezione,note,campo,timer`
+- **Testo promozionale:** Salva il consiglio del tuo maestro, allenalo con una sessione chiara e guarda cosa cambia. Novità: animazioni 3D dei colpi al rallentatore.
+- **Descrizione:**
+
+  Ralli trasforma la tua lezione di tennis in un allenamento che resta.
+
+  SALVA IL CONSIGLIO CHE CONTA
+  Dillo ad alta voce dopo la lezione. Ralli lo trasforma in una nota e te lo ricorda prima della prossima sessione.
+
+  PORTALO IN CAMPO
+  Scegli una sessione breve adatta al tuo tempo, al tuo livello e al tuo formato: da solo, con un compagno o al muro. Passi chiari, un grande timer leggibile anche al sole e un suono con vibrazione alla fine di ogni passo, così il telefono può restare in borsa.
+
+  GUARDA COME SI FA
+  Animazioni 3D mostrano l’ordine e il ritmo di ogni colpo (dritto, rovescio a due mani, servizio, volée, smash e split step) da tre angolazioni e al rallentatore. Anche per mancini.
+
+  GUARDA COSA CAMBIA
+  Segui i giorni in cui ti alleni e ripeti prove semplici. Niente punteggi finti, niente sensi di colpa per i giorni saltati.
+
+  PRIVACY FIN DALL’INIZIO
+  Nessun account. Le tue note restano sul tuo iPhone.
+
+  Ralli non sostituisce un maestro né un parere medico. Scaldati e fermati se senti dolore.
+
+> Tüm diller: yayından önce her dili ana dili o dil olan ve tenis bilen biri okumalı. Ekran görüntüleri her dilde ayrı çekilmeli.

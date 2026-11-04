@@ -8,6 +8,9 @@ struct PlayerPreferences: Codable, Equatable {
     var level = "foundation"
     var activeNoteID: UUID?
     var configured = false
+    /// "left" or "right". Optional so preferences saved by older versions still decode.
+    var handedness: String?
+    var isLeftHanded: Bool { handedness == "left" }
 }
 
 struct SessionDraft: Codable, Equatable {

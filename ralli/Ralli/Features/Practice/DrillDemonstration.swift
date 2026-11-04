@@ -3,6 +3,8 @@ import SafariServices
 
 struct DrillDemonstration: View {
     let plan: PracticePlan
+    @EnvironmentObject private var store: PlayerStore
+    private var motion: StrokeMotion { plan.strokeMotion.forPlayer(leftHanded: store.preferences.isLeftHanded) }
     @Environment(\.accessibilityReduceMotion) private var systemReduceMotion
     @Environment(\.ralliReducedMotion) private var motionOverride
     private var reduceMotion: Bool { motionOverride ?? systemReduceMotion }
@@ -21,8 +23,8 @@ struct DrillDemonstration: View {
                 Text(L10n.text("motion.tab.court")).tag(false)
             }.pickerStyle(.segmented)
             if showStroke {
-                StrokeMotionPlayer(motion: plan.strokeMotion)
-                Text(L10n.text("motion.description." + plan.strokeMotion.id)).font(.body).lineSpacing(4)
+                StrokeMotionPlayer(motion: motion)
+                Text(L10n.text("motion.description." + motion.id)).font(.body).lineSpacing(4)
                 Text(L10n.text("motion.caption")).font(.footnote).foregroundStyle(RalliTheme.muted)
             } else {
                 courtPattern
@@ -45,7 +47,9 @@ struct DrillDemonstration: View {
         TimelineView(.animation(minimumInterval: 1.0/30, paused: !playing || reduceMotion)) { context in
             let elapsed = accumulated + (playing ? context.date.timeIntervalSince(startedAt) : 0)
             let phase = reduceMotion ? Double(position) / 4 : elapsed.truncatingRemainder(dividingBy: 6) / 6
+            // Mirrored for left-handers: crosscourt diagonals and forehand/backhand sides swap.
             DrillCourtDiagram(pattern: plan.visual, progress: phase)
+                .scaleEffect(x: store.preferences.isLeftHanded ? -1 : 1)
                 .frame(height: 210).padding(22).background(RalliTheme.ink, in: RoundedRectangle(cornerRadius: RalliTheme.radius))
                 .accessibilityHidden(true)
         }

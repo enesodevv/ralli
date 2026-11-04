@@ -94,9 +94,10 @@ struct RootView: View {
         let arguments = ProcessInfo.processInfo.arguments
         // Review aid: `-ralli-contact-sheet <motion id> <camera>` shows 12 frames of one motion side by side.
         if let flag = arguments.firstIndex(of: "-ralli-contact-sheet"), arguments.indices.contains(flag + 2),
-           let motion = StrokeMotion.all.first(where: { $0.id == arguments[flag + 1] }), let camera = MotionCamera(rawValue: arguments[flag + 2]) {
+           let motion = StrokeMotion.all.first(where: { $0.id == arguments[flag + 1].replacingOccurrences(of: "-left", with: "") }),
+           let camera = MotionCamera(rawValue: arguments[flag + 2]) {
             hasSeenIntro = true
-            contactSheet = (motion, camera)
+            contactSheet = (arguments[flag + 1].hasSuffix("-left") ? motion.mirrored() : motion, camera)
             return
         }
         // Review aid: `-ralli-demo <plan id>` opens that drill's demonstration directly.

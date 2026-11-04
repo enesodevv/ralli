@@ -99,3 +99,10 @@ Simülatör ek doğrulaması: tercihler kaydedildikten sonra Today önerisi değ
 - Sağlık uyarısı her çalışmanın detayında görünür.
 - Yayın belgeleri (gizlilik politikası EN/TR, App Store metinleri, App Privacy cevapları, kontrol listesi): `outputs/yayin/`.
 - Doğrulama: Release (iphoneos) derlemesi uyarısız; Debug kısayolları sürümde yok; 15 test geçti.
+
+## Solak desteği, App Review hazırlığı ve 6 dil — 4 Kasım 2026
+- **Solak:** tercihlerde "Hangi elinle oynuyorsun?". 3B hareketler tam ayna görüntüsü olarak hesaplanır (`StrokeMotion.mirrored()`); kamera ve kort şemaları da aynalanır. Oynatıcıda "Solak" kısayolu var. Solak hareketler de fiziksel denetim testinden geçer.
+- **App Review:** Bugün ekranındaki (i) düğmesi Hakkında sayfasını açar: uygulama içinde okunabilen gizlilik politikası (Yönerge 5.1.1), izin ayarlarına kısayol, güvenlik notu, LTA/USTA ile bağlantısızlık beyanı, sürüm. Destek e-postası `AppLinks.supportEmail` boşken gösterilmez (ölü bağlantı riski olmasın diye).
+- **Diller:** en, tr, es, de, fr, it. 500 metin; arayüz, 17 çalışma, animasyon metinleri, gizlilik ve izin açıklamaları. Konuşma tanıma ve sesli ipuçları uygulama dilinin bölgesel sesini kullanır. Kullanılmayan 76 eski metin silindi. `testEveryLanguageMatchesEnglish` eksik anahtar ve biçim hatasını yakalar.
+- App Store metinleri dört yeni dilde de `outputs/yayin/app-store-metinleri.md` içinde.
+- Doğrulama: 18 test geçti; Release (iphoneos) derlemesi uyarısız ve 6 dili içeriyor. Almanca Bugün ve Hakkında ekranları ile solak forehand simülatörde kontrol edildi.

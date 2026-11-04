@@ -40,6 +40,9 @@ struct MotionPose: Equatable {
     var ballInLeftHand = false
     /// Knees are always computed (bending forward over the toes).
     var rightKnee = V3.zero, leftKnee = V3.zero
+    /// Left-handed player: the whole pose is a mirror image across the court's centre line.
+    /// "right" fields then mean the hitting side, which is on the player's left.
+    var mirrored = false
 
     static let shoulderHalfWidth = 0.2, hipHalfWidth = 0.11
     static let racketLength = 0.68, racketHeadOffset = 0.47
@@ -51,10 +54,12 @@ struct MotionPose: Equatable {
     static func facing(_ yaw: Double) -> V3 { let r = yaw * .pi / 180; return V3(cos(r), 0, -sin(r)) }
     static func rightSide(_ yaw: Double) -> V3 { let r = yaw * .pi / 180; return V3(sin(r), 0, cos(r)) }
 
-    var rightShoulder: V3 { chest + Self.rightSide(chestYaw) * Self.shoulderHalfWidth }
-    var leftShoulder: V3 { chest - Self.rightSide(chestYaw) * Self.shoulderHalfWidth }
-    var rightHip: V3 { pelvis + Self.rightSide(hipYaw) * Self.hipHalfWidth }
-    var leftHip: V3 { pelvis - Self.rightSide(hipYaw) * Self.hipHalfWidth }
+    /// Points to the hitting-arm side of the body (the player's right, or left when mirrored).
+    func hittingSide(_ yaw: Double) -> V3 { Self.rightSide(yaw) * (mirrored ? -1 : 1) }
+    var rightShoulder: V3 { chest + hittingSide(chestYaw) * Self.shoulderHalfWidth }
+    var leftShoulder: V3 { chest - hittingSide(chestYaw) * Self.shoulderHalfWidth }
+    var rightHip: V3 { pelvis + hittingSide(hipYaw) * Self.hipHalfWidth }
+    var leftHip: V3 { pelvis - hittingSide(hipYaw) * Self.hipHalfWidth }
     var neck: V3 { chest + V3(0, 0.08, 0) }
     var head: V3 { chest + V3(0, 0.25, 0) + Self.facing(chestYaw) * 0.03 }
     var rightToe: V3 { toe(from: rightAnkle) }
@@ -80,6 +85,20 @@ struct MotionPose: Equatable {
          ("torso", pelvis, chest, 0.42...0.56)]
     }
     func with(_ change: (inout MotionPose) -> Void) -> MotionPose { var copy = self; change(&copy); return copy }
+
+    /// Mirror image across the court's centre line (z → −z): a right-hander becomes a left-hander.
+    func mirroredImage() -> MotionPose {
+        func m(_ v: V3) -> V3 { V3(v.x, v.y, -v.z) }
+        var out = self
+        out.pelvis = m(pelvis); out.chest = m(chest)
+        out.chestYaw = -chestYaw; out.hipYaw = -hipYaw
+        out.rightElbow = m(rightElbow); out.rightHand = m(rightHand); out.leftElbow = m(leftElbow); out.leftHand = m(leftHand)
+        out.rightKnee = m(rightKnee); out.leftKnee = m(leftKnee); out.rightAnkle = m(rightAnkle); out.leftAnkle = m(leftAnkle)
+        out.racketDir = m(racketDir); out.racketFace = m(racketFace)
+        out.ball = ball.map(m)
+        out.mirrored = !mirrored
+        return out
+    }
 
     // MARK: Torso geometry
     var torsoAxes: (up: V3, front: V3, side: V3) {
@@ -177,10 +196,10 @@ struct MotionPose: Equatable {
     private static let armDirections: [WritableKeyPath<MotionPose, V3>] = [\.racketDir, \.racketFace]
     private func toChest(_ v: V3, isPoint: Bool) -> V3 {
         let q = isPoint ? v - chest : v
-        return V3(q.dot(Self.facing(chestYaw)), q.y, q.dot(Self.rightSide(chestYaw)))
+        return V3(q.dot(Self.facing(chestYaw)), q.y, q.dot(hittingSide(chestYaw)))
     }
     private func fromChest(_ v: V3, isPoint: Bool) -> V3 {
-        let w = Self.facing(chestYaw) * v.x + V3(0, v.y, 0) + Self.rightSide(chestYaw) * v.z
+        let w = Self.facing(chestYaw) * v.x + V3(0, v.y, 0) + hittingSide(chestYaw) * v.z
         return isPoint ? chest + w : w
     }
     private static let angles: [WritableKeyPath<MotionPose, Double>] = [\.chestYaw, \.hipYaw]
@@ -288,13 +307,20 @@ enum MotionCamera: String, CaseIterable, Identifiable {
 struct StrokeMotion: Identifiable, Equatable {
     let id: String
     /// One cycle of distinct poses; the cycle returns to the first pose.
-    let keyframes: [MotionKeyframe]
+    var keyframes: [MotionKeyframe] { keyframesStorage }
+    private var keyframesStorage: [MotionKeyframe]
     /// Where the player stands: metres from the baseline towards the net.
     var courtX: Double = -0.4
     var defaultCamera: MotionCamera = .side
     /// Backhands read best from the player's left; everything else from the right.
     var sideCameraOnLeft = false
+    /// Mirrored for a left-handed player; cameras mirror with the player.
+    var isLeftHanded = false
     var titleKey: String { "motion.title." + id }
+    init(id: String, keyframes: [MotionKeyframe], courtX: Double = -0.4, defaultCamera: MotionCamera = .side, sideCameraOnLeft: Bool = false) {
+        self.id = id; self.keyframesStorage = keyframes; self.courtX = courtX
+        self.defaultCamera = defaultCamera; self.sideCameraOnLeft = sideCameraOnLeft
+    }
     var cycleDuration: Double { keyframes.reduce(0) { $0 + $1.duration } }
 
     private func timing(at progress: Double) -> (index: Int, local: Double) {
@@ -319,6 +345,17 @@ struct StrokeMotion: Identifiable, Equatable {
         }
         return MotionPose.spline(p(i - 1), p(i), p(i + 1), p(i + 2), MotionPose.smooth(local)).solved()
     }
+    /// The same stroke for a left-handed player.
+    func mirrored() -> StrokeMotion {
+        var copy = self
+        copy.isLeftHanded = !isLeftHanded
+        copy.keyframesStorage = keyframes.map { frame in
+            MotionKeyframe(phase: frame.phase, pose: frame.pose.mirroredImage().with { $0.leftGrip = frame.leftGrip }, duration: frame.duration)
+        }
+        return copy
+    }
+    func forPlayer(leftHanded: Bool) -> StrokeMotion { leftHanded == isLeftHanded ? self : mirrored() }
+
     /// Cycle progress at which key frame `index` is reached, for stepping through phases by hand.
     func progress(atKeyframe index: Int) -> Double {
         guard cycleDuration > 0, keyframes.indices.contains(index) else { return 0 }

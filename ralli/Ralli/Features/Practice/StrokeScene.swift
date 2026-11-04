@@ -320,9 +320,10 @@ final class StrokeSceneRig {
         place(pose)
         updateEffects(motion: motion, progress: progress, pose: pose, enabled: effects)
         SCNTransaction.commit()
-        if camera != lastCamera || motion.id != lastMotionID {
+        let motionKey = motion.id + (motion.isLeftHanded ? "-left" : "")
+        if camera != lastCamera || motionKey != lastMotionID {
             moveCamera(to: camera, motion: motion, animated: animateCamera && lastCamera != nil)
-            lastCamera = camera; lastMotionID = motion.id
+            lastCamera = camera; lastMotionID = motionKey
         }
     }
     private func v(_ p: V3) -> SIMD3<Float> { SIMD3(Float(p.x), Float(p.y), Float(p.z)) }
@@ -438,7 +439,9 @@ final class StrokeSceneRig {
         case .behind: eye = SIMD3(-3.3, 1.85 + lift * 0.4, 1.1); target = SIMD3(0.6, 1.05 + lift, 0.1)
         case .front: eye = SIMD3(3.2, 1.5 + lift * 0.4, 1.7); target = SIMD3(0, 1.0 + lift, 0.15)
         }
-        let world = root + eye, look = root + target
+        // A left-hander is a mirror image, so every camera mirrors with them.
+        let mirror = SIMD3<Float>(1, 1, motion.isLeftHanded ? -1 : 1)
+        let world = root + eye * mirror, look = root + target * mirror
         SCNTransaction.begin()
         SCNTransaction.animationDuration = animated ? 0.7 : 0
         SCNTransaction.animationTimingFunction = CAMediaTimingFunction(name: .easeInEaseOut)

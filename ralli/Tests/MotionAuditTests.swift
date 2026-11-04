@@ -134,7 +134,8 @@ final class MotionAuditTests: XCTestCase {
     /// The audit as a gate: any new pose or code change that brings back a physical glitch fails here.
     /// A forearm may brush the shirt (up to 20 % into the drawn torso) during a fast follow-through; nothing else is allowed.
     func testEveryMotionPassesThePhysicalAudit() {
-        let problems = StrokeMotion.all.flatMap { Self.audit($0) }.filter { finding in
+        let everyone = StrokeMotion.all + StrokeMotion.all.map { $0.mirrored() }
+        let problems = everyone.flatMap { Self.audit($0) }.filter { finding in
             !(finding.check.hasSuffix("forearm inside torso") && finding.worst <= 0.2)
         }
         XCTAssertTrue(problems.isEmpty, problems.map(\.description).joined(separator: "\n"))

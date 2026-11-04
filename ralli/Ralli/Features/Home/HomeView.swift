@@ -7,6 +7,7 @@ struct HomeView: View {
     @State private var setup = false
     @State private var composing = false
     @State private var selected: PracticePlan?
+    @State private var about = false
     var body: some View {
         NavigationStack {
             ScrollView(showsIndicators: false) {
@@ -95,14 +96,22 @@ struct HomeView: View {
             VStack(alignment: .leading, spacing: 8) {
                 Text("ralli.").font(RalliTheme.title(33)).tracking(-1.5)
                 Text(Date.now, format: .dateTime.weekday(.wide).day().month(.abbreviated)).font(.caption).foregroundStyle(RalliTheme.muted)
+                aboutButton
             }
         } else {
             HStack {
                 Text("ralli.").font(RalliTheme.title(33)).tracking(-1.5)
                 Spacer()
                 Text(Date.now, format: .dateTime.weekday(.wide).day().month(.abbreviated)).ralliFont(size: 11, design: .monospaced).foregroundStyle(RalliTheme.muted)
+                aboutButton
             }
         }
+    }
+    private var aboutButton: some View {
+        Button { about = true } label: {
+            Image(systemName: "info.circle").ralliFont(size: 18).frame(minWidth: 44, minHeight: 44)
+        }.buttonStyle(.plain).accessibilityLabel(L10n.text("about.title"))
+            .sheet(isPresented: $about) { AboutView().ralliPresentationEnvironment() }
     }
     private func recommendationCard(_ recommendation: PracticeRecommendation) -> some View {
         let plan = recommendation.plan

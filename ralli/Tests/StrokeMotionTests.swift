@@ -52,7 +52,7 @@ final class StrokeMotionTests: XCTestCase {
     func testEveryDrillHasAMotionWithLocalisedText() throws {
         for plan in PracticePlan.library { XCTAssertTrue(StrokeMotion.all.contains(plan.strokeMotion), plan.id) }
         let testFile = URL(fileURLWithPath: #filePath)
-        for language in ["en", "tr"] {
+        for language in ["en", "tr", "es", "de", "fr", "it"] {
             let url = testFile.deletingLastPathComponent().deletingLastPathComponent()
                 .appendingPathComponent("Ralli/Resources/\(language).lproj/Localizable.strings")
             let strings = try XCTUnwrap(NSDictionary(contentsOf: url) as? [String: String], language)
@@ -62,6 +62,51 @@ final class StrokeMotionTests: XCTestCase {
                 XCTAssertNotNil(strings["motion.description." + motion.id], "\(language) \(motion.id)")
                 for frame in motion.keyframes { XCTAssertNotNil(strings[frame.phase], "\(language) \(frame.phase)") }
             }
+        }
+    }
+
+    /// A left-hander is an exact mirror image of the right-hander at every moment.
+    func testLeftHandedMotionsMirrorEveryFrame() {
+        for motion in StrokeMotion.all {
+            let lefty = motion.mirrored()
+            XCTAssertTrue(lefty.isLeftHanded, motion.id)
+            for value in stride(from: 0.0, to: 1.0, by: 0.01) {
+                let right = motion.pose(at: value), left = lefty.pose(at: value)
+                for (a, b, name) in [(right.rightHand, left.rightHand, "hitting hand"), (right.racketTip, left.racketTip, "racket tip"),
+                                     (right.rightShoulder, left.rightShoulder, "hitting shoulder"), (right.leftAnkle, left.leftAnkle, "front foot")] {
+                    XCTAssertEqual(a.x, b.x, accuracy: 0.002, "\(motion.id) \(name) @\(value)")
+                    XCTAssertEqual(a.y, b.y, accuracy: 0.002, "\(motion.id) \(name) @\(value)")
+                    XCTAssertEqual(a.z, -b.z, accuracy: 0.002, "\(motion.id) \(name) @\(value)")
+                }
+            }
+            XCTAssertFalse(lefty.mirrored().isLeftHanded, motion.id)
+        }
+    }
+    func testOlderPreferencesWithoutHandednessStillDecode() throws {
+        let old = #"{"focus":"Servis","mode":"solo","minutes":20,"hasWall":false,"level":"foundation","configured":true}"#
+        let decoded = try JSONDecoder().decode(PlayerPreferences.self, from: Data(old.utf8))
+        XCTAssertFalse(decoded.isLeftHanded)
+        XCTAssertEqual(decoded.focus, "Servis")
+    }
+
+    /// Every language ships the same keys with the same format arguments as English, plus permission texts.
+    func testEveryLanguageMatchesEnglish() throws {
+        let resources = URL(fileURLWithPath: #filePath).deletingLastPathComponent().deletingLastPathComponent().appendingPathComponent("Ralli/Resources")
+        func load(_ language: String, _ file: String) throws -> [String: String] {
+            try XCTUnwrap(NSDictionary(contentsOf: resources.appendingPathComponent("\(language).lproj/\(file)")) as? [String: String], "\(language) \(file)")
+        }
+        let english = try load("en", "Localizable.strings")
+        let format = try NSRegularExpression(pattern: "%[@d]")
+        func formats(_ text: String) -> [String] {
+            format.matches(in: text, range: NSRange(text.startIndex..., in: text)).map { (text as NSString).substring(with: $0.range) }.sorted()
+        }
+        for language in ["tr", "es", "de", "fr", "it"] {
+            let strings = try load(language, "Localizable.strings")
+            XCTAssertEqual(Set(strings.keys), Set(english.keys), language)
+            for (key, value) in english { XCTAssertEqual(formats(strings[key] ?? ""), formats(value), "\(language) \(key)") }
+            let plist = try load(language, "InfoPlist.strings")
+            XCTAssertNotNil(plist["NSMicrophoneUsageDescription"], language)
+            XCTAssertNotNil(plist["NSSpeechRecognitionUsageDescription"], language)
         }
     }
 }

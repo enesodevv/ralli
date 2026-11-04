@@ -8,6 +8,7 @@ struct StrokeMotionPlayer: View {
     @Environment(\.ralliReducedMotion) private var motionOverride
     @Environment(\.scenePhase) private var scenePhase
     @ObservedObject private var renderQuality = RenderQualityMonitor.shared
+    @EnvironmentObject private var store: PlayerStore
     @State private var playing = true
     @State private var slow = false
     @State private var accumulated: Double = 0
@@ -72,6 +73,7 @@ struct StrokeMotionPlayer: View {
         }
     }
     @ViewBuilder private var controls: some View {
+        HStack { handednessToggle; Spacer() }.ralliFont(size: 14, weight: .medium).tint(RalliTheme.ink)
         HStack(spacing: 12) {
             if reduceMotion {
                 Button { stepIndex = max(0, stepIndex - 1) } label: { Label(L10n.text("motion.prev"), systemImage: "backward.frame").frame(minHeight: 44) }
@@ -89,6 +91,16 @@ struct StrokeMotionPlayer: View {
                 }.toggleStyle(.button).frame(minHeight: 44)
             }
         }.ralliFont(size: 14, weight: .medium).tint(RalliTheme.ink)
+    }
+    /// Quick switch between right- and left-handed views; saved as the player's preference.
+    private var handednessToggle: some View {
+        Toggle(isOn: Binding(get: { store.preferences.isLeftHanded }, set: { left in
+            var value = store.preferences
+            value.handedness = left ? "left" : "right"
+            _ = store.savePreferences(value)
+        })) { Label(L10n.text("motion.lefty"), systemImage: "hand.raised") }
+            .toggleStyle(.button).frame(minHeight: 44)
+            .accessibilityHint(L10n.text("motion.lefty.hint"))
     }
     private func play() { startedAt = Date(); playing = true }
     private func pause() {
