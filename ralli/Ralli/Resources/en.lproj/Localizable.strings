@@ -514,7 +514,7 @@
 "motion.prev" = "Previous phase";
 "motion.next" = "Next phase";
 "motion.a11y" = "Animated figure: %@";
-"motion.caption" = "A simplified side-view figure showing the order of the movement. It is not a full technique model; a coach can adapt it to you.";
+"motion.caption" = "A simplified 3D model showing the order and rhythm of the movement. It is not a full technique analysis; a coach can adapt it to you.";
 "motion.title.forehand" = "Forehand";
 "motion.title.backhand" = "Two-handed backhand";
 "motion.title.serve" = "Serve";
@@ -542,3 +542,7 @@
 "motion.phase.hop" = "Hop";
 "motion.phase.land" = "Land wide";
 "motion.phase.firststep" = "First step";
+"motion.camera.side" = "Side";
+"motion.camera.behind" = "Behind";
+"motion.camera.front" = "Front";
+"motion.camera.label" = "Camera angle";

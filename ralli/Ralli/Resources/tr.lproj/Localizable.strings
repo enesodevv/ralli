@@ -514,7 +514,7 @@
 "motion.prev" = "Önceki evre";
 "motion.next" = "Sonraki evre";
 "motion.a11y" = "Hareketli figür: %@";
-"motion.caption" = "Hareketin sırasını yandan gösteren sade bir figür. Tam bir teknik model değildir; antrenörün sana göre uyarlayabilir.";
+"motion.caption" = "Hareketin sırasını ve ritmini gösteren sade bir 3B model. Tam bir teknik analiz değildir; antrenörün sana göre uyarlayabilir.";
 "motion.title.forehand" = "Forehand";
 "motion.title.backhand" = "Çift el backhand";
 "motion.title.serve" = "Servis";
@@ -542,3 +542,7 @@
 "motion.phase.hop" = "Zıpla";
 "motion.phase.land" = "Geniş in";
 "motion.phase.firststep" = "İlk adım";
+"motion.camera.side" = "Yandan";
+"motion.camera.behind" = "Arkadan";
+"motion.camera.front" = "Önden";
+"motion.camera.label" = "Kamera açısı";

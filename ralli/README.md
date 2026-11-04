@@ -72,11 +72,13 @@ Simülatör ek doğrulaması: tercihler kaydedildikten sonra Today önerisi değ
 - Sayfalar düğmeyle ve yatay kaydırmayla değişir; azaltılmış harekette yalnızca solma geçişi kullanılır. Dosya: `Features/Onboarding/IntroView.swift`.
 - Doğrulama: derleme başarılı, 9 test geçti. Simülatörde İngilizce üç sayfa, "Bana göre ayarla" → tercih ekranı ve Türkçe ilk sayfa kontrol edildi.
 
-## Animasyonlu vuruş hareketleri — 4 Kasım 2026
-- Çalışma gösteriminde iki sekme var: **Vuruş hareketi** (yeni) ve **Kort yönü** (önceki şema).
-- Vuruş hareketi, yandan görülen sade bir oyuncu figürüdür: forehand, çift el backhand, servis, vole, smaç ve split step. Her hareket 4–6 anahtar pozdan oluşur; ara kareler yumuşak geçişle hesaplanır. Evre adı ve sırası (ör. Geri çekiş → Temas → Bitiriş), raket izi, top, oynat/duraklat ve yavaş çekim vardır.
-- Azaltılmış harekette figür kendi kendine oynamaz; evreler düğmeyle ilerletilir.
-- Model: `Core/Models/StrokeMotion.swift`, çizim: `Features/Practice/StrokeMotionView.swift`. Her çalışmanın hareketi odağına göre seçilir (`PracticePlan.strokeMotion`).
-- Figür teknik model değildir; bu açıkça yazılıdır. Pozların bir antrenör tarafından gözden geçirilmesi gerekir.
-- Kort modunda durum çubuğunun altına sabit bir şerit eklendi; kaydırılan metin artık saatin üstüne binmez.
-- Doğrulama: derleme başarılı, 13 test geçti (4'ü yeni hareket testi: kare sınırları, kesintisiz döngü, hatalı girişler, EN/TR evre adları). Simülatörde Türkçe servis animasyonu kontrol edildi; diğer hareketler yalnızca testlerle doğrulandı.
+## 3B vuruş animasyonları — 4 Kasım 2026
+- Çalışma gösteriminde iki sekme var: **Vuruş hareketi** ve **Kort yönü** (önceki şema).
+- Vuruş hareketi SceneKit ile çizilen 3B bir sahnedir: gerçek ölçülerde kort ve file, kıyafetli oyuncu, telli raket, gölge düşüren ışık, ufukta yumuşak sis. Kamera açısı Yandan / Arkadan / Önden seçilebilir; geçişler yumuşaktır.
+- Hareketler: forehand, çift el backhand, servis, vole, smaç, split step. Her biri 4–5 anahtar pozdan oluşur; aradaki kareler Catmull-Rom eğrisiyle hesaplanır. Hazırlık yavaş, vuruş hızlıdır (anahtar poz başına süre). Dirsek ve dizler ters kinematikle her karede gerçek kemik uzunluğunda tutulur.
+- Efektler: raket başının savrulma izi, temas anında genişleyen halka, top tellerin üstünde. Yavaş çekim hızı %35'e düşürür.
+- Azaltılmış harekette sahne kendi kendine oynamaz, efektler kapanır; evreler düğmeyle ilerletilir.
+- Dosyalar: `Core/Models/StrokeMotion.swift` (pozlar, zamanlama, IK), `Features/Practice/StrokeScene.swift` (sahne), `Features/Practice/StrokeMotionView.swift` (oynatıcı).
+- Geliştirme kısayolu (yalnızca Debug): uygulamayı `-ralli-demo <çalışma kimliği>` ile açmak o çalışmanın gösterimini doğrudan açar, ör. `-ralli-demo serve`.
+- Figür teknik analiz değildir; uygulamada bu yazılıdır. Pozların bir antrenör tarafından gözden geçirilmesi gerekir.
+- Doğrulama: derleme 0 uyarı, 13 test geçti (kemik oranları anahtar pozlarda ve ara karelerde, ayak/raket zemin üstünde, zamanlama, EN/TR metinler). Altı hareket simülatörde Türkçe olarak kare kare incelendi. Gerçek iPhone'da akıcılık ve pil etkisi henüz ölçülmedi.

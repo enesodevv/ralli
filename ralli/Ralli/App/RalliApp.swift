@@ -25,6 +25,7 @@ struct RootView: View {
     @State private var showIntro = false
     @State private var setupAfterIntro = false
     @State private var showSetup = false
+    @State private var debugDemo: PracticePlan?
     @Environment(\.accessibilityReduceMotion) private var systemReduceMotion
     @Environment(\.ralliReducedMotion) private var motionOverride
     private var reduceMotion: Bool { motionOverride ?? systemReduceMotion }
@@ -74,11 +75,21 @@ struct RootView: View {
             }.ralliPresentationEnvironment()
         }
         .sheet(isPresented: $showSetup) { PlayerPreferencesView(preferences: store.preferences).ralliPresentationEnvironment() }
+        .sheet(item: $debugDemo) { plan in
+            ScrollView { DrillDemonstration(plan: plan).padding(24) }.background(RalliTheme.paper).ralliPresentationEnvironment()
+        }
     }
     /// Only brand-new players see the intro; anyone with notes or sessions already knows the app.
     private func decideIntro() {
         #if DEBUG
         if ProcessInfo.processInfo.arguments.contains("-ralli-show-intro") { showIntro = true; return }
+        // Review aid: `-ralli-demo <plan id>` opens that drill's demonstration directly.
+        let arguments = ProcessInfo.processInfo.arguments
+        if let flag = arguments.firstIndex(of: "-ralli-demo"), arguments.indices.contains(flag + 1) {
+            hasSeenIntro = true
+            debugDemo = PracticePlan.library.first { $0.id == arguments[flag + 1] }
+            return
+        }
         #endif
         guard !hasSeenIntro else { return }
         if store.notes.isEmpty && store.records.isEmpty && store.draft == nil { showIntro = true }
