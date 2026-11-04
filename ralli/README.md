@@ -71,3 +71,12 @@ Simülatör ek doğrulaması: tercihler kaydedildikten sonra Today önerisi değ
 - Geliştirme sırasında tanıtımı zorla açmak için uygulamayı `-ralli-show-intro` argümanıyla başlatın (yalnızca Debug).
 - Sayfalar düğmeyle ve yatay kaydırmayla değişir; azaltılmış harekette yalnızca solma geçişi kullanılır. Dosya: `Features/Onboarding/IntroView.swift`.
 - Doğrulama: derleme başarılı, 9 test geçti. Simülatörde İngilizce üç sayfa, "Bana göre ayarla" → tercih ekranı ve Türkçe ilk sayfa kontrol edildi.
+
+## Animasyonlu vuruş hareketleri — 4 Kasım 2026
+- Çalışma gösteriminde iki sekme var: **Vuruş hareketi** (yeni) ve **Kort yönü** (önceki şema).
+- Vuruş hareketi, yandan görülen sade bir oyuncu figürüdür: forehand, çift el backhand, servis, vole, smaç ve split step. Her hareket 4–6 anahtar pozdan oluşur; ara kareler yumuşak geçişle hesaplanır. Evre adı ve sırası (ör. Geri çekiş → Temas → Bitiriş), raket izi, top, oynat/duraklat ve yavaş çekim vardır.
+- Azaltılmış harekette figür kendi kendine oynamaz; evreler düğmeyle ilerletilir.
+- Model: `Core/Models/StrokeMotion.swift`, çizim: `Features/Practice/StrokeMotionView.swift`. Her çalışmanın hareketi odağına göre seçilir (`PracticePlan.strokeMotion`).
+- Figür teknik model değildir; bu açıkça yazılıdır. Pozların bir antrenör tarafından gözden geçirilmesi gerekir.
+- Kort modunda durum çubuğunun altına sabit bir şerit eklendi; kaydırılan metin artık saatin üstüne binmez.
+- Doğrulama: derleme başarılı, 13 test geçti (4'ü yeni hareket testi: kare sınırları, kesintisiz döngü, hatalı girişler, EN/TR evre adları). Simülatörde Türkçe servis animasyonu kontrol edildi; diğer hareketler yalnızca testlerle doğrulandı.

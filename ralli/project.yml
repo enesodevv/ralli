@@ -34,6 +34,7 @@ targets:
       - Ralli/Core/Models/PlayerContext.swift
       - Ralli/Core/Models/NoteDraft.swift
       - Ralli/Core/Models/CourtPattern.swift
+      - Ralli/Core/Models/StrokeMotion.swift
       - Ralli/Core/Persistence/PlayerArchive.swift
     settings:
       base:

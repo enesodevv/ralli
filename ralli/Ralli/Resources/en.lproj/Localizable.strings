@@ -335,7 +335,7 @@
 "progress.count" = "%d sessions recorded";
 "save.unavailable" = "Storage is unavailable. Please try again.";
 "save.failed" = "Couldn’t save this change. Please try again.";
-"demo.title" = "SEE THE PATTERN";
+"demo.title" = "See how it's done";
 "demo.play" = "Play court demonstration";
 "demo.pause" = "Pause demonstration";
 "demo.next.position" = "Show next position";
@@ -356,7 +356,7 @@
 "a11y.comparison" = "Recorded comparison for %@";
 "app.saved" = "Session saved";
 "app.saved.detail" = "You can find it in Progress.";
-"demo.open" = "View court setup";
+"demo.open" = "See the motion and setup";
 
 /* Expanded library and UI refresh — 2 Nov 2026 */
 "shadow.title" = "Shadow swings";
@@ -506,3 +506,39 @@
 "intro.setup" = "Set it up for me";
 "intro.explore" = "Just look around";
 "intro.privacy" = "Your notes stay on this device.";
+
+/* Stroke motion figure */
+"motion.tab.stroke" = "Stroke motion";
+"motion.tab.court" = "Court pattern";
+"motion.slow" = "Slow motion";
+"motion.prev" = "Previous phase";
+"motion.next" = "Next phase";
+"motion.a11y" = "Animated figure: %@";
+"motion.caption" = "A simplified side-view figure showing the order of the movement. It is not a full technique model; a coach can adapt it to you.";
+"motion.title.forehand" = "Forehand";
+"motion.title.backhand" = "Two-handed backhand";
+"motion.title.serve" = "Serve";
+"motion.title.volley" = "Volley";
+"motion.title.overhead" = "Overhead";
+"motion.title.split" = "Split step";
+"motion.description.forehand" = "Turn early, let the racket drop below the ball, meet it in front of your body and finish over the opposite shoulder.";
+"motion.description.backhand" = "Both hands stay on the racket: turn the shoulders, swing through contact in front and finish high over the front shoulder.";
+"motion.description.serve" = "Toss with a straight arm, pause in the trophy position, let the racket drop behind your back, then reach up to the ball.";
+"motion.description.volley" = "Keep the racket up in front. A short turn, a small step forward and a firm punch, no big swing.";
+"motion.description.overhead" = "Turn sideways, point at the ball with your free hand and hit at full reach, like a serve without the toss.";
+"motion.description.split" = "A small hop as the opponent hits, a wide balanced landing, then a quick first step towards the ball.";
+"motion.phase.ready" = "Ready";
+"motion.phase.takeback" = "Take-back";
+"motion.phase.drop" = "Racket drop";
+"motion.phase.contact" = "Contact";
+"motion.phase.finish" = "Finish";
+"motion.phase.recover" = "Recover";
+"motion.phase.stance" = "Stance";
+"motion.phase.trophy" = "Toss & trophy";
+"motion.phase.racketdrop" = "Racket drop";
+"motion.phase.turn" = "Short turn";
+"motion.phase.punch" = "Punch";
+"motion.phase.point" = "Turn & point";
+"motion.phase.hop" = "Hop";
+"motion.phase.land" = "Land wide";
+"motion.phase.firststep" = "First step";

@@ -335,7 +335,7 @@
 "progress.count" = "%d çalışma kaydedildi";
 "save.unavailable" = "Kayıt alanına erişilemiyor. Tekrar deneyebilirsin.";
 "save.failed" = "Bu değişiklik kaydedilemedi. Tekrar deneyebilirsin.";
-"demo.title" = "ÇALIŞMA YÖNÜNÜ GÖR";
+"demo.title" = "Nasıl yapılır";
 "demo.play" = "Kort gösterimini oynat";
 "demo.pause" = "Gösterimi duraklat";
 "demo.next.position" = "Sonraki konumu göster";
@@ -356,7 +356,7 @@
 "a11y.comparison" = "%@ için kayıt karşılaştırması";
 "app.saved" = "Çalışma kaydedildi";
 "app.saved.detail" = "Gelişim ekranında bulabilirsin.";
-"demo.open" = "Kort kurulumunu gör";
+"demo.open" = "Hareketi ve kurulumu gör";
 
 /* Expanded library and UI refresh — 2 Nov 2026 */
 "shadow.title" = "Gölge vuruşlar";
@@ -506,3 +506,39 @@
 "intro.setup" = "Bana göre ayarla";
 "intro.explore" = "Önce bir bakayım";
 "intro.privacy" = "Notların bu cihazda kalır.";
+
+/* Stroke motion figure */
+"motion.tab.stroke" = "Vuruş hareketi";
+"motion.tab.court" = "Kort yönü";
+"motion.slow" = "Yavaş çekim";
+"motion.prev" = "Önceki evre";
+"motion.next" = "Sonraki evre";
+"motion.a11y" = "Hareketli figür: %@";
+"motion.caption" = "Hareketin sırasını yandan gösteren sade bir figür. Tam bir teknik model değildir; antrenörün sana göre uyarlayabilir.";
+"motion.title.forehand" = "Forehand";
+"motion.title.backhand" = "Çift el backhand";
+"motion.title.serve" = "Servis";
+"motion.title.volley" = "Vole";
+"motion.title.overhead" = "Smaç";
+"motion.title.split" = "Split step";
+"motion.description.forehand" = "Erken dön, raketi topun altına indir, topu vücudunun önünde karşıla ve karşı omzunun üstünde bitir.";
+"motion.description.backhand" = "İki el rakette kalır: omuzları döndür, önde temas et ve ön omzunun üstünde yüksek bitir.";
+"motion.description.serve" = "Topu düz kolla at, kupa pozisyonunda bekle, raketi sırtının arkasına düşür, sonra topa uzan.";
+"motion.description.volley" = "Raketi önde ve yukarıda tut. Kısa bir dönüş, öne küçük bir adım ve sağlam bir vuruş; büyük salınım yok.";
+"motion.description.overhead" = "Yana dön, boştaki elinle topu göster ve tam uzanarak vur; atışsız bir servis gibi.";
+"motion.description.split" = "Rakip vururken küçük bir zıplama, geniş ve dengeli bir iniş, sonra topa doğru hızlı ilk adım.";
+"motion.phase.ready" = "Hazır";
+"motion.phase.takeback" = "Geri çekiş";
+"motion.phase.drop" = "Raket iner";
+"motion.phase.contact" = "Temas";
+"motion.phase.finish" = "Bitiriş";
+"motion.phase.recover" = "Toparlan";
+"motion.phase.stance" = "Duruş";
+"motion.phase.trophy" = "Atış ve kupa";
+"motion.phase.racketdrop" = "Raket düşer";
+"motion.phase.turn" = "Kısa dönüş";
+"motion.phase.punch" = "Vuruş";
+"motion.phase.point" = "Dön ve göster";
+"motion.phase.hop" = "Zıpla";
+"motion.phase.land" = "Geniş in";
+"motion.phase.firststep" = "İlk adım";

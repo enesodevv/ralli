@@ -61,6 +61,8 @@ struct PracticeSessionView: View {
                 }.padding(24)
             }.background(courtMode ? RalliTheme.ink : RalliTheme.paper).foregroundStyle(foreground)
                 .preferredColorScheme(courtMode ? .dark : .light)
+                // Solid band under the status bar so scrolled text never collides with the clock.
+                .safeAreaInset(edge: .top, spacing: 0) { Color.clear.frame(height: 0).background(courtMode ? RalliTheme.ink : RalliTheme.paper) }
                 .safeAreaInset(edge: .bottom) {
                     if !active {
                         PrimaryButton(title: L10n.text("practice.start"), icon: "play.fill") {

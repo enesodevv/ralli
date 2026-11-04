@@ -7,7 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		0113096B8C9C9700714E031D /* StrokeMotion.swift in Sources */ = {isa = PBXBuildFile; fileRef = B220BB8163FD4080A9BE9C04 /* StrokeMotion.swift */; };
 		03C5EF822086238B289C8C9B /* PracticePlan.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41E1B551FCEE5B10189A6206 /* PracticePlan.swift */; };
+		1917C3F463AEB1A12166C37D /* StrokeMotionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58137D5710693CFAD127DAAD /* StrokeMotionView.swift */; };
 		1BD9054ED78B69AC6A8D460E /* SpeechNoteRecorder.swift in Sources */ = {isa = PBXBuildFile; fileRef = F598B923215ED6E3B2A22272 /* SpeechNoteRecorder.swift */; };
 		1C9DE9C3579D930442480AF4 /* PlayerContext.swift in Sources */ = {isa = PBXBuildFile; fileRef = FBFB54CA7F91D4E6CB299290 /* PlayerContext.swift */; };
 		2236BEDF89FA282140644035 /* PracticeSessionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0188B3943444BA70F26A7813 /* PracticeSessionView.swift */; };
@@ -30,6 +32,7 @@
 		695E80E8C838F7E4A206A206 /* L10n.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D985451AC536072E12AADDE /* L10n.swift */; };
 		743270186A715870582D8CFD /* PracticeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 337A0B159B5A172B9D6BE78E /* PracticeView.swift */; };
 		7C63E84EAE2576ACBEB4FFA3 /* PlayerArchive.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D1C86A09C2ADFB76FA000C0 /* PlayerArchive.swift */; };
+		843005C0E4D031A81CC10730 /* StrokeMotion.swift in Sources */ = {isa = PBXBuildFile; fileRef = B220BB8163FD4080A9BE9C04 /* StrokeMotion.swift */; };
 		96704181828D82782CA9596F /* L10n.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D985451AC536072E12AADDE /* L10n.swift */; };
 		9FFFC5FF0319AA0260A6D4E4 /* PlayerPreferencesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9F75E77F3DB377583C29213 /* PlayerPreferencesView.swift */; };
 		AE23B159A81CE9E83969061F /* PlayerStoreTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED6721F820F4FFBA45138534 /* PlayerStoreTests.swift */; };
@@ -39,6 +42,7 @@
 		D3CD0C1ABF62674D9383C0B6 /* PracticePlan.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41E1B551FCEE5B10189A6206 /* PracticePlan.swift */; };
 		E715152B8A85E2400D759472 /* IntroView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7BB2C829AEF36433AED20FA /* IntroView.swift */; };
 		EAD1B197D92AE890D19DED84 /* CourtPattern.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BE78C83C8C08D2F563EC6F4 /* CourtPattern.swift */; };
+		FA5DA4492F69F4E0D3C91585 /* StrokeMotionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97C57774D3154C913D99D974 /* StrokeMotionTests.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -52,11 +56,14 @@
 		408776930DD668AB253E6115 /* RalliApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RalliApp.swift; sourceTree = "<group>"; };
 		41E1B551FCEE5B10189A6206 /* PracticePlan.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PracticePlan.swift; sourceTree = "<group>"; };
 		4EE167ED22ABF39222F11071 /* PracticeVoiceGuide.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PracticeVoiceGuide.swift; sourceTree = "<group>"; };
+		58137D5710693CFAD127DAAD /* StrokeMotionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StrokeMotionView.swift; sourceTree = "<group>"; };
 		5D985451AC536072E12AADDE /* L10n.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = L10n.swift; sourceTree = "<group>"; };
 		73147B03EF9C2F2820378DEA /* Ralli.app */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.application; path = Ralli.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		9118FC3DBEA97C110EBEDB58 /* RalliTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RalliTheme.swift; sourceTree = "<group>"; };
+		97C57774D3154C913D99D974 /* StrokeMotionTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StrokeMotionTests.swift; sourceTree = "<group>"; };
 		9A5F3FC930D455EA91FEE2EC /* DrillCourtDiagram.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DrillCourtDiagram.swift; sourceTree = "<group>"; };
 		9D1C86A09C2ADFB76FA000C0 /* PlayerArchive.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayerArchive.swift; sourceTree = "<group>"; };
+		B220BB8163FD4080A9BE9C04 /* StrokeMotion.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StrokeMotion.swift; sourceTree = "<group>"; };
 		B522E411C5AFE863F27573E8 /* tr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = tr; path = tr.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		C3EF6FA96EE6B6F7ABF38DDC /* PlayerStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayerStore.swift; sourceTree = "<group>"; };
 		C78EA77BE79639AE30744DBC /* RalliPersistenceTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = RalliPersistenceTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -91,6 +98,7 @@
 				FBFB54CA7F91D4E6CB299290 /* PlayerContext.swift */,
 				C3EF6FA96EE6B6F7ABF38DDC /* PlayerStore.swift */,
 				41E1B551FCEE5B10189A6206 /* PracticePlan.swift */,
+				B220BB8163FD4080A9BE9C04 /* StrokeMotion.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -167,6 +175,7 @@
 				227C55BAA16A13B11329534E /* DrillDemonstration.swift */,
 				0188B3943444BA70F26A7813 /* PracticeSessionView.swift */,
 				337A0B159B5A172B9D6BE78E /* PracticeView.swift */,
+				58137D5710693CFAD127DAAD /* StrokeMotionView.swift */,
 			);
 			path = Practice;
 			sourceTree = "<group>";
@@ -210,6 +219,7 @@
 			children = (
 				33DF9961D3B82CA5C1B16C49 /* CourtPatternTests.swift */,
 				ED6721F820F4FFBA45138534 /* PlayerStoreTests.swift */,
+				97C57774D3154C913D99D974 /* StrokeMotionTests.swift */,
 			);
 			path = Tests;
 			sourceTree = "<group>";
@@ -354,6 +364,8 @@
 				450AEA25D9A574D581420B48 /* PlayerStore.swift in Sources */,
 				AE23B159A81CE9E83969061F /* PlayerStoreTests.swift in Sources */,
 				D3CD0C1ABF62674D9383C0B6 /* PracticePlan.swift in Sources */,
+				843005C0E4D031A81CC10730 /* StrokeMotion.swift in Sources */,
+				FA5DA4492F69F4E0D3C91585 /* StrokeMotionTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -381,6 +393,8 @@
 				58A15F82A4105FF9215CC001 /* RalliApp.swift in Sources */,
 				BB92190B27C8A27A8E3FF37F /* RalliTheme.swift in Sources */,
 				1BD9054ED78B69AC6A8D460E /* SpeechNoteRecorder.swift in Sources */,
+				0113096B8C9C9700714E031D /* StrokeMotion.swift in Sources */,
+				1917C3F463AEB1A12166C37D /* StrokeMotionView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
