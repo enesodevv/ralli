@@ -45,7 +45,8 @@ final class StrokeMotionTests: XCTestCase {
             }
             XCTAssertTrue(motion.keyframes.contains { $0.pose.ball != nil } || motion.id == "split", motion.id)
         }
-        XCTAssertNotNil(StrokeMotion.forehand.impact(at: 0.665))
+        let contact = try! XCTUnwrap(StrokeMotion.forehand.keyframes.firstIndex { $0.phase == "motion.phase.contact" })
+        XCTAssertNotNil(StrokeMotion.forehand.impact(at: StrokeMotion.forehand.progress(atKeyframe: contact) + 0.005))
         XCTAssertNil(StrokeMotion.forehand.impact(at: 0.1))
     }
     func testEveryDrillHasAMotionWithLocalisedText() throws {

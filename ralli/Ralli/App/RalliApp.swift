@@ -26,6 +26,7 @@ struct RootView: View {
     @State private var setupAfterIntro = false
     @State private var showSetup = false
     @State private var debugDemo: PracticePlan?
+    @State private var contactSheet: (StrokeMotion, MotionCamera)?
     @Environment(\.accessibilityReduceMotion) private var systemReduceMotion
     @Environment(\.ralliReducedMotion) private var motionOverride
     private var reduceMotion: Bool { motionOverride ?? systemReduceMotion }
@@ -75,6 +76,11 @@ struct RootView: View {
             }.ralliPresentationEnvironment()
         }
         .sheet(isPresented: $showSetup) { PlayerPreferencesView(preferences: store.preferences).ralliPresentationEnvironment() }
+        .overlay {
+            #if DEBUG
+            if let (motion, camera) = contactSheet { MotionContactSheet(motion: motion, camera: camera) }
+            #endif
+        }
         .sheet(item: $debugDemo) { plan in
             ScrollView { DrillDemonstration(plan: plan).padding(24) }.background(RalliTheme.paper).ralliPresentationEnvironment()
         }
@@ -83,8 +89,15 @@ struct RootView: View {
     private func decideIntro() {
         #if DEBUG
         if ProcessInfo.processInfo.arguments.contains("-ralli-show-intro") { showIntro = true; return }
-        // Review aid: `-ralli-demo <plan id>` opens that drill's demonstration directly.
         let arguments = ProcessInfo.processInfo.arguments
+        // Review aid: `-ralli-contact-sheet <motion id> <camera>` shows 12 frames of one motion side by side.
+        if let flag = arguments.firstIndex(of: "-ralli-contact-sheet"), arguments.indices.contains(flag + 2),
+           let motion = StrokeMotion.all.first(where: { $0.id == arguments[flag + 1] }), let camera = MotionCamera(rawValue: arguments[flag + 2]) {
+            hasSeenIntro = true
+            contactSheet = (motion, camera)
+            return
+        }
+        // Review aid: `-ralli-demo <plan id>` opens that drill's demonstration directly.
         if let flag = arguments.firstIndex(of: "-ralli-demo"), arguments.indices.contains(flag + 1) {
             hasSeenIntro = true
             debugDemo = PracticePlan.library.first { $0.id == arguments[flag + 1] }
@@ -96,3 +109,27 @@ struct RootView: View {
         else { hasSeenIntro = true }
     }
 }
+
+#if DEBUG
+/// Debug-only review grid: the same motion frozen at 12 evenly spaced moments.
+struct MotionContactSheet: View {
+    let motion: StrokeMotion
+    let camera: MotionCamera
+    var body: some View {
+        VStack(alignment: .leading, spacing: 4) {
+            Text("\(motion.id) · \(camera.rawValue)").font(.caption.monospaced()).foregroundStyle(RalliTheme.paper)
+            LazyVGrid(columns: Array(repeating: GridItem(.flexible(), spacing: 3), count: 3), spacing: 3) {
+                ForEach(0..<12, id: \.self) { index in
+                    let progress = Double(index) / 12
+                    StrokeSceneView(motion: motion, progress: progress, camera: camera, effects: true, animateCamera: false)
+                        .frame(height: 150)
+                        .overlay(alignment: .topLeading) {
+                            Text("\(index) \(String(format: "%.2f", progress)) \(L10n.text(motion.keyframes[motion.phaseIndex(at: progress)].phase))")
+                                .font(.system(size: 9, design: .monospaced)).foregroundStyle(.white).padding(3)
+                        }
+                }
+            }
+        }.padding(.horizontal, 4).padding(.top, 50).frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .top).background(Color.black)
+    }
+}
+#endif

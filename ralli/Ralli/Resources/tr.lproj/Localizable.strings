@@ -534,7 +534,7 @@
 "motion.phase.finish" = "Bitiriş";
 "motion.phase.recover" = "Toparlan";
 "motion.phase.stance" = "Duruş";
-"motion.phase.trophy" = "Atış ve kupa";
+"motion.phase.trophy" = "Kupa pozisyonu";
 "motion.phase.racketdrop" = "Raket düşer";
 "motion.phase.turn" = "Kısa dönüş";
 "motion.phase.punch" = "Vuruş";
@@ -546,3 +546,5 @@
 "motion.camera.behind" = "Arkadan";
 "motion.camera.front" = "Önden";
 "motion.camera.label" = "Kamera açısı";
+"motion.phase.toss" = "Top atışı";
+"motion.phase.follow" = "Takip";

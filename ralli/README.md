@@ -82,3 +82,10 @@ Simülatör ek doğrulaması: tercihler kaydedildikten sonra Today önerisi değ
 - Geliştirme kısayolu (yalnızca Debug): uygulamayı `-ralli-demo <çalışma kimliği>` ile açmak o çalışmanın gösterimini doğrudan açar, ör. `-ralli-demo serve`.
 - Figür teknik analiz değildir; uygulamada bu yazılıdır. Pozların bir antrenör tarafından gözden geçirilmesi gerekir.
 - Doğrulama: derleme 0 uyarı, 13 test geçti (kemik oranları anahtar pozlarda ve ara karelerde, ayak/raket zemin üstünde, zamanlama, EN/TR metinler). Altı hareket simülatörde Türkçe olarak kare kare incelendi. Gerçek iPhone'da akıcılık ve pil etkisi henüz ölçülmedi.
+
+## Hareket denetimi ve düzeltmeler — 4 Kasım 2026
+- Altı hareket 600 karede sayısal ve 3 kamerada görsel olarak denetlendi. 37 bulgunun tamamı giderildi; ayrıntılı rapor: `outputs/Ralli-Hareket-Denetimi.md`.
+- Kollar ve raket göğsün kendi ekseninde, raket yönü küresel ara değerlemeyle hesaplanır. Her karede şu kurallar uygulanır: kemik boyları sabit, dizler öne, eller/raket kafa ve gövde dışında, backhand'de sol el sapta, ayak ya sabit ya da adım atarak hareket eder.
+- Servis ve smaç doğru teknikle yeniden yazıldı (Top atışı ve Kupa pozisyonu evreleri). Forehand ve backhand'e Takip evresi eklendi. Oyuncuya siperlikli şapka eklendi.
+- Denetim artık test kapısıdır: `MotionAuditTests.testEveryMotionPassesThePhysicalAudit`.
+- Debug kısayolu: `-ralli-contact-sheet <hareket> <side|behind|front>` bir hareketin 12 karesini tek ekranda gösterir.

@@ -534,7 +534,7 @@
 "motion.phase.finish" = "Finish";
 "motion.phase.recover" = "Recover";
 "motion.phase.stance" = "Stance";
-"motion.phase.trophy" = "Toss & trophy";
+"motion.phase.trophy" = "Trophy position";
 "motion.phase.racketdrop" = "Racket drop";
 "motion.phase.turn" = "Short turn";
 "motion.phase.punch" = "Punch";
@@ -546,3 +546,5 @@
 "motion.camera.behind" = "Behind";
 "motion.camera.front" = "Front";
 "motion.camera.label" = "Camera angle";
+"motion.phase.toss" = "Toss";
+"motion.phase.follow" = "Follow-through";

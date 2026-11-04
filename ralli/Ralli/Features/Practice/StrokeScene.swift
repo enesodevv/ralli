@@ -35,7 +35,7 @@ final class StrokeSceneRig {
     let cameraNode = SCNNode()
     private let player = SCNNode()
     private var limbs: [String: SCNNode] = [:]
-    private let torso = SCNNode(), head = SCNNode(), hair = SCNNode()
+    private let torso = SCNNode(), head = SCNNode(), hair = SCNNode(), visor = SCNNode()
     private let racket = SCNNode(), ball = SCNNode(), impactRing = SCNNode(), swoosh = SCNNode()
     private var lastCamera: MotionCamera?
     private var lastMotionID: String?
@@ -195,10 +195,18 @@ final class StrokeSceneRig {
         head.geometry = SCNSphere(radius: 0.112)
         head.geometry?.materials = [Self.material(Self.skin)]
         player.addChildNode(head)
-        hair.geometry = SCNSphere(radius: 0.116)
-        hair.geometry?.materials = [Self.material(UIColor(red: 0.16, green: 0.12, blue: 0.1, alpha: 1))]
-        hair.scale = SCNVector3(1, 0.82, 1)
+        // White cap with a visor: shows at a glance which way the player is looking.
+        let capMaterial = Self.material(Self.white)
+        let crown = SCNSphere(radius: 0.12)
+        crown.materials = [capMaterial]
+        hair.geometry = crown
+        hair.scale = SCNVector3(1, 0.72, 1)
         player.addChildNode(hair)
+        let brim = SCNCylinder(radius: 0.085, height: 0.012)
+        brim.materials = [Self.material(UIColor(white: 0.9, alpha: 1))]
+        visor.geometry = brim
+        visor.scale = SCNVector3(1, 1, 0.75)
+        player.addChildNode(visor)
 
         buildRacket()
         player.addChildNode(racket)
@@ -337,7 +345,10 @@ final class StrokeSceneRig {
         let center = (v(p.chest) + v(p.pelvis)) / 2
         torso.simdTransform = simd_float4x4(columns: (SIMD4(front * 0.78, 0), SIMD4(up, 0), SIMD4(side * 1.32, 0), SIMD4(center, 1)))
         head.simdPosition = v(p.head)
-        hair.simdPosition = v(p.head + V3(0, 0.035, 0) - MotionPose.facing(p.chestYaw) * 0.025)
+        let look = MotionPose.facing(p.chestYaw)
+        hair.simdPosition = v(p.head + V3(0, 0.045, 0) - look * 0.01)
+        visor.simdPosition = v(p.head + V3(0, 0.035, 0) + look * 0.105)
+        visor.simdOrientation = simd_quatf(angle: Float(atan2(-look.z, look.x)), axis: SIMD3(0, 1, 0)) * simd_quatf(angle: -0.12, axis: SIMD3(0, 0, 1))
 
         // Racket basis: y along the shaft, z through the strings.
         let shaft = v(p.shaft), normal = v(p.stringNormal), across = simd_cross(shaft, normal)
@@ -352,7 +363,7 @@ final class StrokeSceneRig {
             impactRing.simdPosition = v(b)
             let normal = v(pose.stringNormal)
             impactRing.simdOrientation = simd_quatf(from: SIMD3(0, 1, 0), to: normal)
-            let scale = Float(1 + t * 2.6)
+            let scale = Float(0.8 + t * 1.4)
             impactRing.simdScale = SIMD3(scale, scale, scale)
             impactRing.opacity = CGFloat(1 - t)
         } else { impactRing.isHidden = true }
@@ -401,7 +412,9 @@ final class StrokeSceneRig {
         let lift: Float = (motion.id == "serve" || motion.id == "overhead") ? 0.4 : 0
         let eye: SIMD3<Float>, target: SIMD3<Float>
         switch camera {
-        case .side: eye = SIMD3(0.8, 1.25 + lift * 0.6, 3.7 + lift * 1.1); target = SIMD3(0.3, 1.0 + lift, 0.1)
+        case .side:
+            let side: Float = motion.sideCameraOnLeft ? -1 : 1
+            eye = SIMD3(0.45, 1.25 + lift * 0.6, side * (4.0 + lift * 1.1)); target = SIMD3(0.1, 1.0 + lift, side * 0.1)
         case .behind: eye = SIMD3(-3.3, 1.85 + lift * 0.4, 1.1); target = SIMD3(0.6, 1.05 + lift, 0.1)
         case .front: eye = SIMD3(3.2, 1.5 + lift * 0.4, 1.7); target = SIMD3(0, 1.0 + lift, 0.15)
         }
