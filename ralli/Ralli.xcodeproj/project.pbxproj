@@ -36,7 +36,10 @@
 		7C63E84EAE2576ACBEB4FFA3 /* PlayerArchive.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D1C86A09C2ADFB76FA000C0 /* PlayerArchive.swift */; };
 		843005C0E4D031A81CC10730 /* StrokeMotion.swift in Sources */ = {isa = PBXBuildFile; fileRef = B220BB8163FD4080A9BE9C04 /* StrokeMotion.swift */; };
 		96704181828D82782CA9596F /* L10n.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D985451AC536072E12AADDE /* L10n.swift */; };
+		980047600E66860F83A5F7BE /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = 83B68B564C9107CD0CF05A68 /* PrivacyInfo.xcprivacy */; };
+		9CC89D1DEFFCE352287EA690 /* RenderQuality.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B807C2E677BC3B693E42A0D /* RenderQuality.swift */; };
 		9FFFC5FF0319AA0260A6D4E4 /* PlayerPreferencesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9F75E77F3DB377583C29213 /* PlayerPreferencesView.swift */; };
+		A24DA4931A606F6541C319B6 /* Analytics.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0FCC9592366AE710C4985023 /* Analytics.swift */; };
 		AE23B159A81CE9E83969061F /* PlayerStoreTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED6721F820F4FFBA45138534 /* PlayerStoreTests.swift */; };
 		BB92190B27C8A27A8E3FF37F /* RalliTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9118FC3DBEA97C110EBEDB58 /* RalliTheme.swift */; };
 		C4F41B316638EB63575E9548 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = E30663D89CB119F6397A183D /* Assets.xcassets */; };
@@ -49,6 +52,7 @@
 
 /* Begin PBXFileReference section */
 		0188B3943444BA70F26A7813 /* PracticeSessionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PracticeSessionView.swift; sourceTree = "<group>"; };
+		0FCC9592366AE710C4985023 /* Analytics.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Analytics.swift; sourceTree = "<group>"; };
 		1278052D8380F2D8C41D6B9D /* HomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
 		227C55BAA16A13B11329534E /* DrillDemonstration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DrillDemonstration.swift; sourceTree = "<group>"; };
 		337A0B159B5A172B9D6BE78E /* PracticeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PracticeView.swift; sourceTree = "<group>"; };
@@ -62,6 +66,8 @@
 		5D985451AC536072E12AADDE /* L10n.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = L10n.swift; sourceTree = "<group>"; };
 		64331B91E875712D7E18CA35 /* MotionAuditTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MotionAuditTests.swift; sourceTree = "<group>"; };
 		73147B03EF9C2F2820378DEA /* Ralli.app */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.application; path = Ralli.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		83B68B564C9107CD0CF05A68 /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; path = PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
+		8B807C2E677BC3B693E42A0D /* RenderQuality.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RenderQuality.swift; sourceTree = "<group>"; };
 		9118FC3DBEA97C110EBEDB58 /* RalliTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RalliTheme.swift; sourceTree = "<group>"; };
 		97C57774D3154C913D99D974 /* StrokeMotionTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StrokeMotionTests.swift; sourceTree = "<group>"; };
 		9A5F3FC930D455EA91FEE2EC /* DrillCourtDiagram.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DrillCourtDiagram.swift; sourceTree = "<group>"; };
@@ -88,7 +94,9 @@
 		02521D0DBA86BFC5EB40612F /* Services */ = {
 			isa = PBXGroup;
 			children = (
+				0FCC9592366AE710C4985023 /* Analytics.swift */,
 				4EE167ED22ABF39222F11071 /* PracticeVoiceGuide.swift */,
+				8B807C2E677BC3B693E42A0D /* RenderQuality.swift */,
 				F598B923215ED6E3B2A22272 /* SpeechNoteRecorder.swift */,
 			);
 			path = Services;
@@ -205,6 +213,7 @@
 			isa = PBXGroup;
 			children = (
 				E30663D89CB119F6397A183D /* Assets.xcassets */,
+				83B68B564C9107CD0CF05A68 /* PrivacyInfo.xcprivacy */,
 				2F60DC3DC9B79977BEA6B0AB /* InfoPlist.strings */,
 				4CF7E6AB3FEFA1DCDB6936BF /* Localizable.strings */,
 			);
@@ -315,9 +324,11 @@
 				LastUpgradeCheck = 1430;
 				TargetAttributes = {
 					9EDE241FE19A111AC6A4660D = {
+						DevelopmentTeam = "";
 						ProvisioningStyle = Automatic;
 					};
 					A9E1D52BDF6213A3F26CAE0A = {
+						DevelopmentTeam = "";
 						ProvisioningStyle = Automatic;
 					};
 				};
@@ -351,6 +362,7 @@
 				C4F41B316638EB63575E9548 /* Assets.xcassets in Resources */,
 				3B81F8FE2C86089EAE5DAE7A /* InfoPlist.strings in Resources */,
 				255AD183061F5A5C62CF5AE0 /* Localizable.strings in Resources */,
+				980047600E66860F83A5F7BE /* PrivacyInfo.xcprivacy in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -380,6 +392,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A24DA4931A606F6541C319B6 /* Analytics.swift in Sources */,
 				EAD1B197D92AE890D19DED84 /* CourtPattern.swift in Sources */,
 				CCC2A755B34FE3881892A51E /* DrillCourtDiagram.swift in Sources */,
 				41811EABBBD2748FB33E8FFD /* DrillDemonstration.swift in Sources */,
@@ -399,6 +412,7 @@
 				5D9C609A3CF4A5D6507E395C /* ProgressViewScreen.swift in Sources */,
 				58A15F82A4105FF9215CC001 /* RalliApp.swift in Sources */,
 				BB92190B27C8A27A8E3FF37F /* RalliTheme.swift in Sources */,
+				9CC89D1DEFFCE352287EA690 /* RenderQuality.swift in Sources */,
 				1BD9054ED78B69AC6A8D460E /* SpeechNoteRecorder.swift in Sources */,
 				0113096B8C9C9700714E031D /* StrokeMotion.swift in Sources */,
 				1917C3F463AEB1A12166C37D /* StrokeMotionView.swift in Sources */,
@@ -465,7 +479,9 @@
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				CODE_SIGN_STYLE = Automatic;
 				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 1;
 				DEBUG_INFORMATION_FORMAT = dwarf;
+				DEVELOPMENT_TEAM = "";
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
@@ -484,12 +500,16 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_CFBundleDisplayName = Ralli;
+				INFOPLIST_KEY_ITSAppUsesNonExemptEncryption = NO;
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.sports";
 				INFOPLIST_KEY_NSMicrophoneUsageDescription = "Use the microphone to dictate your lesson notes.";
 				INFOPLIST_KEY_NSSpeechRecognitionUsageDescription = "Turn your speech into lesson notes in your app language.";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UIRequiresFullScreen = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
 				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				MARKETING_VERSION = 1.0.0;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
@@ -602,7 +622,9 @@
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				CODE_SIGN_STYLE = Automatic;
 				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 1;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEVELOPMENT_TEAM = "";
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
@@ -615,12 +637,16 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_CFBundleDisplayName = Ralli;
+				INFOPLIST_KEY_ITSAppUsesNonExemptEncryption = NO;
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.sports";
 				INFOPLIST_KEY_NSMicrophoneUsageDescription = "Use the microphone to dictate your lesson notes.";
 				INFOPLIST_KEY_NSSpeechRecognitionUsageDescription = "Turn your speech into lesson notes in your app language.";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UIRequiresFullScreen = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
 				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				MARKETING_VERSION = 1.0.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				PRODUCT_NAME = "$(TARGET_NAME)";

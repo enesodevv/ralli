@@ -7,6 +7,7 @@ struct StrokeMotionPlayer: View {
     @Environment(\.accessibilityReduceMotion) private var systemReduceMotion
     @Environment(\.ralliReducedMotion) private var motionOverride
     @Environment(\.scenePhase) private var scenePhase
+    @ObservedObject private var renderQuality = RenderQualityMonitor.shared
     @State private var playing = true
     @State private var slow = false
     @State private var accumulated: Double = 0
@@ -19,11 +20,12 @@ struct StrokeMotionPlayer: View {
 
     var body: some View {
         VStack(alignment: .leading, spacing: 14) {
-            TimelineView(.animation(minimumInterval: 1.0 / 60, paused: !playing || reduceMotion)) { context in
+            TimelineView(.animation(minimumInterval: 1.0 / Double(renderQuality.quality.framesPerSecond), paused: !playing || reduceMotion)) { context in
                 let progress = currentProgress(at: context.date)
                 let index = motion.phaseIndex(at: progress)
                 VStack(alignment: .leading, spacing: 14) {
-                    StrokeSceneView(motion: motion, progress: progress, camera: activeCamera, effects: !reduceMotion, animateCamera: !reduceMotion)
+                    StrokeSceneView(motion: motion, progress: progress, camera: activeCamera, effects: !reduceMotion, animateCamera: !reduceMotion,
+                                    quality: renderQuality.quality)
                         .frame(height: 330)
                         .clipShape(RoundedRectangle(cornerRadius: RalliTheme.radius))
                         .overlay(alignment: .topLeading) {
@@ -39,13 +41,14 @@ struct StrokeMotionPlayer: View {
                 .accessibilityLabel(String(format: L10n.text("motion.a11y"), L10n.text(motion.titleKey)))
                 .accessibilityValue(L10n.text(motion.keyframes[index].phase))
             }
-            Picker(L10n.text("motion.camera.label"), selection: Binding(get: { activeCamera }, set: { camera = $0 })) {
+            Picker(L10n.text("motion.camera.label"), selection: Binding(get: { activeCamera }, set: { camera = $0; Analytics.track(.motionCameraChanged(camera: $0.rawValue)) })) {
                 ForEach(MotionCamera.allCases) { Text(L10n.text($0.titleKey)).tag($0) }
             }.pickerStyle(.segmented)
             controls
         }
         .onChange(of: scenePhase) { _, phase in if phase != .active { pause() } }
         .onChange(of: motion.id) { _, _ in accumulated = 0; startedAt = Date(); stepIndex = 0; camera = nil }
+        .onAppear { Analytics.track(.motionViewed(motionID: motion.id)) }
         .onDisappear { pause() }
     }
 
@@ -96,5 +99,6 @@ struct StrokeMotionPlayer: View {
     private func setSlow(_ value: Bool) {
         if playing { accumulated += Date().timeIntervalSince(startedAt) * speed; startedAt = Date() }
         slow = value
+        Analytics.track(.motionSlowToggled(on: value))
     }
 }

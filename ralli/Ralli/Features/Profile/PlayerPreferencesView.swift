@@ -41,7 +41,10 @@ struct PlayerPreferencesView: View {
                         value.configured = true
                         // Keep a linked cue only if its category still matches the chosen focus.
                         if value.focus != store.preferences.focus { value.activeNoteID = nil }
-                        if store.savePreferences(value) { dismiss() }
+                        if store.savePreferences(value) {
+                            Analytics.track(.preferencesSaved(focus: value.focus, mode: value.mode, minutes: value.minutes))
+                            dismiss()
+                        }
                     }.listRowInsets(EdgeInsets()).listRowBackground(Color.clear)
                 }
             }.scrollContentBackground(.hidden).background(RalliTheme.paper).tint(RalliTheme.ink)

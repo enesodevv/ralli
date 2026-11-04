@@ -49,6 +49,8 @@ import SwiftUI
             try session.setActive(true)
             let request = SFSpeechAudioBufferRecognitionRequest()
             request.shouldReportPartialResults = true
+            // Keep speech on the device whenever the phone supports it; audio then never leaves the iPhone.
+            if recognizer.supportsOnDeviceRecognition { request.requiresOnDeviceRecognition = true }
             self.request = request
             let input = engine.inputNode
             let format = input.outputFormat(forBus: 0)

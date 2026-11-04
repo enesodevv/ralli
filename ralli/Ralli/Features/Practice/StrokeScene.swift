@@ -11,6 +11,7 @@ struct StrokeSceneView: UIViewRepresentable {
     let camera: MotionCamera
     var effects = true
     var animateCamera = true
+    var quality: RenderQuality = .full
 
     func makeCoordinator() -> StrokeSceneRig { StrokeSceneRig() }
     func makeUIView(context: Context) -> SCNView {
@@ -18,15 +19,17 @@ struct StrokeSceneView: UIViewRepresentable {
         view.scene = context.coordinator.scene
         view.pointOfView = context.coordinator.cameraNode
         view.backgroundColor = UIColor(RalliTheme.ink)
-        view.antialiasingMode = .multisampling4X
         view.isUserInteractionEnabled = false   // never steal the page's scroll
-        view.preferredFramesPerSecond = 60
         view.isAccessibilityElement = false
+        // SceneKit only redraws when SwiftUI moves a node, so a paused animation costs nothing.
+        view.rendersContinuously = false
+        context.coordinator.setQuality(quality, on: view)
         context.coordinator.apply(motion: motion, progress: progress, camera: camera, effects: effects, animateCamera: false)
         return view
     }
     func updateUIView(_ view: SCNView, context: Context) {
-        context.coordinator.apply(motion: motion, progress: progress, camera: camera, effects: effects, animateCamera: animateCamera)
+        context.coordinator.setQuality(quality, on: view)
+        context.coordinator.apply(motion: motion, progress: progress, camera: camera, effects: effects && quality == .full, animateCamera: animateCamera)
     }
 }
 
@@ -38,6 +41,8 @@ final class StrokeSceneRig {
     private let torso = SCNNode(), head = SCNNode(), hair = SCNNode(), visor = SCNNode()
     private let racket = SCNNode(), ball = SCNNode(), impactRing = SCNNode(), swoosh = SCNNode()
     private var lastCamera: MotionCamera?
+    private var appliedQuality: RenderQuality?
+    private var sun: SCNLight?
     private var lastMotionID: String?
 
     // MARK: Palette
@@ -145,6 +150,7 @@ final class StrokeSceneRig {
         sun.light?.shadowMode = .forward
         sun.light?.shadowRadius = 4
         sun.light?.shadowSampleCount = 12
+        self.sun = sun.light
         sun.light?.shadowColor = UIColor(white: 0, alpha: 0.5)
         sun.light?.shadowMapSize = CGSize(width: 2048, height: 2048)
         sun.light?.automaticallyAdjustsShadowProjection = true
@@ -289,6 +295,20 @@ final class StrokeSceneRig {
             path.stroke()
             _ = context
         }
+    }
+
+    /// Full: HDR bloom, depth of field, soft shadows, 4x MSAA at 60 fps. Eco: none of the extras, 30 fps.
+    func setQuality(_ quality: RenderQuality, on view: SCNView) {
+        guard quality != appliedQuality else { return }
+        appliedQuality = quality
+        let full = quality == .full
+        view.preferredFramesPerSecond = quality.framesPerSecond
+        view.antialiasingMode = full ? .multisampling4X : .multisampling2X
+        cameraNode.camera?.wantsDepthOfField = full
+        cameraNode.camera?.wantsHDR = full
+        sun?.shadowSampleCount = full ? 12 : 4
+        sun?.shadowMapSize = full ? CGSize(width: 2048, height: 2048) : CGSize(width: 1024, height: 1024)
+        if !full { swoosh.geometry = nil; impactRing.isHidden = true }
     }
 
     // MARK: Per-frame update

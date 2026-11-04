@@ -239,7 +239,7 @@
 "practice.structure" = "Your session";
 "practice.source" = "Read the reference";
 "practice.adapted" = "Ralli session design informed by public coaching resources. Timings and checks are Ralli adaptations.";
-"practice.before" = "Warm up at your own pace. Leave space for others and pause if you feel pain.";
+"practice.before" = "Warm up at your own pace and leave space for others. Stop if you feel pain. Ralli does not replace a coach or medical advice.";
 "practice.start" = "Start session";
 "practice.next" = "Next step";
 "practice.finish" = "Review session";
@@ -477,7 +477,7 @@
 "personal.intro" = "Save the tip from your lesson, take it to court, and see what changes.";
 "personal.open.journal" = "Open in Journal";
 "practice.preferences" = "Preferences";
-"practice.sources" = "Safety & sources";
+"practice.sources" = "Sources";
 "practice.metric.heading" = "Final check";
 "practice.metric.toss" = "Tosses on target out of 10";
 "level.foundation.short" = "Beginner";

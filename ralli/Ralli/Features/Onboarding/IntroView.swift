@@ -19,7 +19,7 @@ struct IntroView: View {
                 Text("ralli.").font(RalliTheme.title(28)).tracking(-1.2)
                 Spacer()
                 if !isLast {
-                    Button(L10n.text("intro.skip")) { onFinish(false) }
+                    Button(L10n.text("intro.skip")) { Analytics.track(.introSkipped(page: page + 1)); onFinish(false) }
                         .ralliFont(size: 14, weight: .medium).frame(minWidth: 44, minHeight: 44)
                 }
             }.frame(minHeight: 44).padding(.horizontal, 24).padding(.top, 8)

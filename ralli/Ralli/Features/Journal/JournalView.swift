@@ -58,7 +58,7 @@ struct JournalView: View {
                             }
                             HStack(spacing: 10) {
                                 Button {
-                                    if store.activateNote(note) { selection = 0 }
+                                    if store.activateNote(note) { Analytics.track(.noteActivated); selection = 0 }
                                 } label: {
                                     Label(L10n.text("journal.practice"), systemImage: "figure.tennis").ralliFont(size: 13, weight: .semibold)
                                         .padding(.horizontal, 16).frame(minHeight: 44)
@@ -67,7 +67,7 @@ struct JournalView: View {
                                 Spacer(minLength: 0)
                                 Menu {
                                     if !isActive {
-                                        Button { if store.activateNote(note) { activated = true } } label: { Label(L10n.text("journal.activate"), systemImage: "scope") }
+                                        Button { if store.activateNote(note) { Analytics.track(.noteActivated); activated = true } } label: { Label(L10n.text("journal.activate"), systemImage: "scope") }
                                     }
                                     ShareLink(item: "\(note.title)\n\n\(note.text)") { Label(L10n.text("Paylaş"), systemImage: "square.and.arrow.up") }
                                     Button { editing = note } label: { Label(L10n.text("Düzenle"), systemImage: "pencil") }
@@ -103,6 +103,7 @@ struct NoteEditor: View {
     @State private var textBeforeRecording = ""
     @State private var restoredNoteDraft = false
     @State private var leave = false
+    @State private var usedVoice = false
     @State private var skipDraftSave = false
     let note: LessonNote?
     @State private var title: String
@@ -150,12 +151,14 @@ struct NoteEditor: View {
                             let finalTitle = cleanTitle.isEmpty ? Self.suggestedTitle(from: cleanText) : cleanTitle
                             if let note { saved = store.updateNote(id: note.id, title: finalTitle, text: cleanText, category: category) }
                             else { saved = store.addNote(title: finalTitle, text: cleanText, category: category) }
+                            if saved { Analytics.track(.noteSaved(isNew: note == nil, usedVoice: usedVoice, category: category)) }
                             if saved { skipDraftSave = true; UserDefaults.standard.removeObject(forKey: NoteDraft.key(for: note?.id)); dismiss() } }
                             .disabled(speech.recording || speech.requesting || text.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty)
                     }
                 }.tint(RalliTheme.ink)
                 .onChange(of: speech.transcript) { _, transcript in
                     guard !transcript.isEmpty else { return }
+                    usedVoice = true
                     text = textBeforeRecording + (textBeforeRecording.isEmpty ? "" : "\n") + transcript
                 }
                 .onChange(of: scenePhase) { _, phase in if phase == .background || (phase == .inactive && speech.recording) { speech.stop() } }

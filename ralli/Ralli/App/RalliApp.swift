@@ -66,12 +66,14 @@ struct RootView: View {
             Button(L10n.text("Tamam"), role: .cancel) { store.persistenceError = nil }
         } message: { Text(store.persistenceError ?? "") }
         .onAppear { decideIntro() }
+        .task { Analytics.track(.appOpened); DiagnosticsReceiver.shared.start() }
         .fullScreenCover(isPresented: $showIntro, onDismiss: {
             if setupAfterIntro { setupAfterIntro = false; selection = 0; showSetup = true }
         }) {
             IntroView { openSetup in
                 hasSeenIntro = true
                 setupAfterIntro = openSetup
+                Analytics.track(.introFinished(openedSetup: openSetup))
                 showIntro = false
             }.ralliPresentationEnvironment()
         }

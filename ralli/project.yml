@@ -14,9 +14,17 @@ settings:
     INFOPLIST_KEY_UILaunchScreen_Generation: YES
     INFOPLIST_KEY_CFBundleDisplayName: Ralli
     INFOPLIST_KEY_UISupportedInterfaceOrientations: UIInterfaceOrientationPortrait
+    INFOPLIST_KEY_UIRequiresFullScreen: YES
     INFOPLIST_KEY_NSMicrophoneUsageDescription: "Use the microphone to dictate your lesson notes."
     INFOPLIST_KEY_NSSpeechRecognitionUsageDescription: "Turn your speech into lesson notes in your app language."
     CODE_SIGN_STYLE: Automatic
+    # Release identity. Set DEVELOPMENT_TEAM to your Apple Developer team ID before archiving;
+    # PRODUCT_BUNDLE_IDENTIFIER should use a domain you own (e.g. app.ralli.ios).
+    MARKETING_VERSION: 1.0.0
+    CURRENT_PROJECT_VERSION: 1
+    DEVELOPMENT_TEAM: ""
+    INFOPLIST_KEY_ITSAppUsesNonExemptEncryption: NO
+    INFOPLIST_KEY_LSApplicationCategoryType: public.app-category.sports
 targets:
   Ralli:
     type: application

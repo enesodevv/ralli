@@ -239,7 +239,7 @@
 "practice.structure" = "Çalışmanın akışı";
 "practice.source" = "Kaynağı incele";
 "practice.adapted" = "Kamuya açık antrenörlük kaynaklarından yararlanan Ralli çalışması. Süreler ve bitiriş testleri Ralli uyarlamasıdır.";
-"practice.before" = "Kendi hızında ısın. Diğer oyunculara alan bırak; ağrı hissedersen dur.";
+"practice.before" = "Kendi hızında ısın ve diğer oyunculara alan bırak. Ağrı hissedersen dur. Ralli bir antrenörün ya da hekimin yerini tutmaz.";
 "practice.start" = "Çalışmaya başla";
 "practice.next" = "Sonraki adım";
 "practice.finish" = "Çalışmayı değerlendir";
@@ -477,7 +477,7 @@
 "personal.intro" = "Dersindeki ipucunu kaydet, korta taşı, neyin değiştiğini gör.";
 "personal.open.journal" = "Defterde aç";
 "practice.preferences" = "Tercihler";
-"practice.sources" = "Güvenlik ve kaynaklar";
+"practice.sources" = "Kaynaklar";
 "practice.metric.heading" = "Bitiriş testi";
 "practice.metric.toss" = "10 atıştan hedefe düşenler";
 "level.foundation.short" = "Başlangıç";

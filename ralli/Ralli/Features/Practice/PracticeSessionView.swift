@@ -69,6 +69,7 @@ struct PracticeSessionView: View {
                             guard store.draft == nil || store.draft?.planID == plan.id else { blocked = true; return }
                             Task { _ = try? await UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .sound]) }
                             active = true; step = 0; secondsSpent = 0; linkedNoteID = applicableCue?.id; startStep()
+                            Analytics.track(.sessionStarted(planID: plan.id, resumed: false))
                             if reduceMotion { proxy.scrollTo("session", anchor: .top) }
                             else { withAnimation { proxy.scrollTo("session", anchor: .top) } }
                         }.disabled(blocked).padding(.horizontal, 24).padding(.vertical, 12).background(RalliTheme.paper)
@@ -104,8 +105,12 @@ struct PracticeSessionView: View {
                 }
                 .interactiveDismissDisabled(active)
                 .confirmationDialog(L10n.text("Çalışmadan çıkılsın mı?"), isPresented: $confirmExit, titleVisibility: .visible) {
-                    Button(L10n.text("practice.suspend")) { if checkpoint() { active = false; dismiss() } }
-                    Button(L10n.text("practice.discard"), role: .destructive) { if store.saveDraft(nil) { active = false; dismiss() } }
+                    Button(L10n.text("practice.suspend")) {
+                        if checkpoint() { Analytics.track(.sessionLeft(planID: plan.id, keptDraft: true)); active = false; dismiss() }
+                    }
+                    Button(L10n.text("practice.discard"), role: .destructive) {
+                        if store.saveDraft(nil) { Analytics.track(.sessionLeft(planID: plan.id, keptDraft: false)); active = false; dismiss() }
+                    }
                     Button(L10n.text("Devam et"), role: .cancel) {}
                 }
                 .alert(L10n.text("practice.existing"), isPresented: $blocked) {
@@ -172,6 +177,12 @@ struct PracticeSessionView: View {
             detail("practice.goal", body: plan.goal)
             detail("practice.equipment", body: plan.equipment)
             detail("practice.preconditions", body: plan.prerequisite)
+            // Safety stays visible, not tucked away: warm up, give others room, stop if it hurts.
+            HStack(alignment: .top, spacing: 12) {
+                Image(systemName: "heart.text.square").foregroundStyle(RalliTheme.clay).accessibilityHidden(true)
+                Text(L10n.text("practice.before")).ralliFont(size: 13).lineSpacing(4)
+            }.padding(16).frame(maxWidth: .infinity, alignment: .leading)
+                .overlay(RoundedRectangle(cornerRadius: RalliTheme.smallRadius).stroke(RalliTheme.clay.opacity(0.5), lineWidth: 1))
             VStack(alignment: .leading, spacing: 8) {
                 Eyebrow(text: L10n.text("practice.metric.heading"))
                 Text(plan.metricTitle).ralliFont(size: 15, weight: .medium)
@@ -182,7 +193,6 @@ struct PracticeSessionView: View {
             }
             DisclosureGroup(L10n.text("practice.sources")) {
                 VStack(alignment: .leading, spacing: 12) {
-                    Text(L10n.text("practice.before")).ralliFont(size: 13).foregroundStyle(RalliTheme.muted).lineSpacing(4)
                     if let url = URL(string: plan.source) { Link(L10n.text("practice.source"), destination: url).ralliFont(size: 13, weight: .medium) }
                     Text(L10n.text("practice.adapted")).ralliFont(size: 11).foregroundStyle(RalliTheme.muted).lineSpacing(3)
                 }.frame(maxWidth: .infinity, alignment: .leading).padding(.top, 10)
@@ -268,7 +278,10 @@ struct PracticeSessionView: View {
             }
             PrimaryButton(title: L10n.text("practice.save.result"), icon: "checkmark") {
                 let note = reflection.trimmingCharacters(in: .whitespacesAndNewlines)
-                if store.completePractice(focus: plan.focus, seconds: secondsSpent, planID: plan.id, result: includeResult ? result : nil, reflection: note.isEmpty ? nil : note, noteID: linkedNoteID, sessionID: sessionID, benchmarkVersion: plan.benchmarkVersion) { active = false; dismiss() }
+                if store.completePractice(focus: plan.focus, seconds: secondsSpent, planID: plan.id, result: includeResult ? result : nil, reflection: note.isEmpty ? nil : note, noteID: linkedNoteID, sessionID: sessionID, benchmarkVersion: plan.benchmarkVersion) {
+                    Analytics.track(.sessionCompleted(planID: plan.id, minutes: secondsSpent / 60, loggedResult: includeResult))
+                    active = false; dismiss()
+                }
             }
         }
     }
@@ -324,6 +337,7 @@ struct PracticeSessionView: View {
         sessionID = draft.id; step = draft.step; remaining = draft.remaining; secondsSpent = draft.secondsSpent
         reviewing = draft.reviewing; includeResult = draft.includeResult; result = draft.result; reflection = draft.reflection; linkedNoteID = draft.noteID
         active = true; paused = true; restored = true; stepEndSignalled = draft.remaining <= 0
+        Analytics.track(.sessionStarted(planID: plan.id, resumed: true))
     }
     private func refresh() {
         guard active && !paused && !reviewing else { return }

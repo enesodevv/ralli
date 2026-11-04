@@ -89,3 +89,13 @@ Simülatör ek doğrulaması: tercihler kaydedildikten sonra Today önerisi değ
 - Servis ve smaç doğru teknikle yeniden yazıldı (Top atışı ve Kupa pozisyonu evreleri). Forehand ve backhand'e Takip evresi eklendi. Oyuncuya siperlikli şapka eklendi.
 - Denetim artık test kapısıdır: `MotionAuditTests.testEveryMotionPassesThePhysicalAudit`.
 - Debug kısayolu: `-ralli-contact-sheet <hareket> <side|behind|front>` bir hareketin 12 karesini tek ekranda gösterir.
+
+## Faz 0 — yayın hazırlığı (4 Kasım 2026)
+- `PrivacyInfo.xcprivacy`: izleme yok, veri toplama yok, UserDefaults gerekçesi CA92.1. Analitik servisi eklenirse güncellenmeli.
+- Sürüm 1.0.0 (1), `ITSAppUsesNonExemptEncryption = NO`, Spor kategorisi, tam ekran (yalnızca dikey). `DEVELOPMENT_TEAM` ve kalıcı bundle ID `project.yml` içinde girilmeli.
+- Konuşma tanıma, destekleyen cihazlarda yalnızca cihaz içinde çalışıyor.
+- `RenderQuality`: Düşük Güç modunda ya da cihaz ısınınca 3B sahne 30 fps ve efektsiz moda geçer; duraklatılınca çizim yapmaz.
+- `Analytics`: huni olayları (açılış, tanıtım, tercih, not, seans, hareket gösterimi). Kişisel içerik yok; şimdilik yalnızca cihaz günlüğüne yazılıyor. MetricKit çökme ve donma teşhisleri bağlı.
+- Sağlık uyarısı her çalışmanın detayında görünür.
+- Yayın belgeleri (gizlilik politikası EN/TR, App Store metinleri, App Privacy cevapları, kontrol listesi): `outputs/yayin/`.
+- Doğrulama: Release (iphoneos) derlemesi uyarısız; Debug kısayolları sürümde yok; 15 test geçti.
