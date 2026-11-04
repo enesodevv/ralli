@@ -1,0 +1,2 @@
+"NSMicrophoneUsageDescription" = "Ders notunu konuşarak yazabilmen için mikrofonunu kullanırız.";
+"NSSpeechRecognitionUsageDescription" = "Söylediklerini Türkçe ders notuna dönüştürmek için konuşma tanımayı kullanırız.";

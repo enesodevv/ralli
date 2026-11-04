@@ -1,0 +1,14 @@
+# macOS
+.DS_Store
+
+# Xcode user state and build output
+xcuserdata/
+*.xcuserstate
+DerivedData/
+build/
+*.xcresult/
+
+# Local build caches and logs from earlier work
+work/DerivedData/
+work/swift-cache/
+*.log

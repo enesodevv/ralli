@@ -1,0 +1,87 @@
+import SwiftUI
+import UIKit
+
+@main struct RalliApp: App {
+    @StateObject private var store = PlayerStore()
+    var body: some Scene {
+        WindowGroup {
+            #if DEBUG
+            if ProcessInfo.processInfo.arguments.contains("-ralli-accessibility-qa") {
+                RootView().environmentObject(store).preferredColorScheme(.light)
+                    .environment(\.dynamicTypeSize, .accessibility5)
+                    .environment(\.ralliReducedMotion, true)
+            } else { RootView().environmentObject(store).preferredColorScheme(.light) }
+            #else
+            RootView().environmentObject(store).preferredColorScheme(.light)
+            #endif
+        }
+    }
+}
+struct RootView: View {
+    @EnvironmentObject private var store: PlayerStore
+    @State private var selection = 0
+    @State private var savedToast: UUID?
+    @AppStorage("hasSeenIntro") private var hasSeenIntro = false
+    @State private var showIntro = false
+    @State private var setupAfterIntro = false
+    @State private var showSetup = false
+    @Environment(\.accessibilityReduceMotion) private var systemReduceMotion
+    @Environment(\.ralliReducedMotion) private var motionOverride
+    private var reduceMotion: Bool { motionOverride ?? systemReduceMotion }
+    var body: some View {
+        TabView(selection: $selection) {
+            HomeView(selection: $selection).tabItem { Label(L10n.text("Today"), systemImage: "tennisball") }.tag(0)
+            PracticeView().tabItem { Label(L10n.text("Çalış"), systemImage: "figure.tennis") }.tag(1)
+            JournalView(selection: $selection).tabItem { Label(L10n.text("Defter"), systemImage: "book.closed") }.tag(2)
+            ProgressViewScreen().tabItem { Label(L10n.text("Gelişim"), systemImage: "chart.xyaxis.line") }.tag(3)
+        }.tint(RalliTheme.ink)
+        .sensoryFeedback(.success, trigger: store.completedSessions)
+        .onChange(of: store.completedSessions) { previous, current in
+            guard current > previous else { return }
+            if reduceMotion { savedToast = UUID() }
+            else { withAnimation(.easeOut(duration: 0.2)) { savedToast = UUID() } }
+            if UIAccessibility.isVoiceOverRunning { UIAccessibility.post(notification: .announcement, argument: L10n.text("a11y.saved")) }
+        }
+        .overlay(alignment: .top) {
+            if savedToast != nil {
+                HStack(spacing: 12) {
+                    Image(systemName: "checkmark.circle.fill").foregroundStyle(RalliTheme.ink)
+                    VStack(alignment: .leading, spacing: 4) {
+                        Text(L10n.text("app.saved")).font(.headline)
+                        Text(L10n.text("app.saved.detail")).font(.subheadline).foregroundStyle(RalliTheme.muted)
+                    }
+                }.padding(16).background(RalliTheme.paper, in: RoundedRectangle(cornerRadius: RalliTheme.radius))
+                    .shadow(color: .black.opacity(0.1), radius: 12, y: 4).padding(.horizontal, 20).padding(.top, 8)
+                    .allowsHitTesting(false).accessibilityHidden(true).transition(.opacity)
+            }
+        }
+        .task(id: savedToast) {
+            guard savedToast != nil else { return }
+            do { try await Task.sleep(for: .seconds(4)) } catch { return }
+            savedToast = nil
+        }
+        .alert(L10n.text("Kayıt sorunu"), isPresented: Binding(get: { store.persistenceError != nil }, set: { if !$0 { store.persistenceError = nil } })) {
+            Button(L10n.text("Tamam"), role: .cancel) { store.persistenceError = nil }
+        } message: { Text(store.persistenceError ?? "") }
+        .onAppear { decideIntro() }
+        .fullScreenCover(isPresented: $showIntro, onDismiss: {
+            if setupAfterIntro { setupAfterIntro = false; selection = 0; showSetup = true }
+        }) {
+            IntroView { openSetup in
+                hasSeenIntro = true
+                setupAfterIntro = openSetup
+                showIntro = false
+            }.ralliPresentationEnvironment()
+        }
+        .sheet(isPresented: $showSetup) { PlayerPreferencesView(preferences: store.preferences).ralliPresentationEnvironment() }
+    }
+    /// Only brand-new players see the intro; anyone with notes or sessions already knows the app.
+    private func decideIntro() {
+        #if DEBUG
+        if ProcessInfo.processInfo.arguments.contains("-ralli-show-intro") { showIntro = true; return }
+        #endif
+        guard !hasSeenIntro else { return }
+        if store.notes.isEmpty && store.records.isEmpty && store.draft == nil { showIntro = true }
+        else { hasSeenIntro = true }
+    }
+}
