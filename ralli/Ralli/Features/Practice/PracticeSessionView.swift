@@ -62,6 +62,11 @@ struct PracticeSessionView: View {
                 }.padding(24)
             }.background(courtMode ? RalliTheme.ink : RalliTheme.paper).foregroundStyle(foreground)
                 .preferredColorScheme(courtMode ? .dark : .light)
+                // Pushed page: own header, no tab bar. Swipe back works until a session starts.
+                .toolbar(.hidden, for: .navigationBar)
+                .toolbar(.hidden, for: .tabBar)
+                .navigationBarBackButtonHidden(true)
+                .onChange(of: active, initial: true) { _, running in SwipeBack.isBlocked = running }
                 // Solid band under the status bar so scrolled text never collides with the clock.
                 .safeAreaInset(edge: .top, spacing: 0) { Color.clear.frame(height: 0).background(courtMode ? RalliTheme.ink : RalliTheme.paper) }
                 .safeAreaInset(edge: .bottom) {
@@ -94,6 +99,7 @@ struct PracticeSessionView: View {
                     else if active && !paused && !reviewing { voice.speak(plan.steps[step].instruction) }
                 }
                 .onDisappear {
+                    SwipeBack.isBlocked = false
                     voice.stop(); cancelStepNotification()
                     UIApplication.shared.isIdleTimerDisabled = false
                     if active { _ = checkpoint() }
@@ -133,8 +139,8 @@ struct PracticeSessionView: View {
             else if active { confirmExit = true }
             else { dismiss() }
         } label: {
-            Label(L10n.text(reviewing ? "practice.continue" : (active ? "Çalışmadan çık" : "practice.close")),
-                  systemImage: reviewing ? "arrow.left" : "xmark")
+            Label(L10n.text(reviewing ? "practice.continue" : (active ? "Çalışmadan çık" : "practice.back")),
+                  systemImage: active && !reviewing ? "xmark" : "chevron.left")
                 .ralliFont(size: 14, weight: .medium).frame(minHeight: 44)
         }.buttonStyle(.plain).padding(.top, 4)
     }

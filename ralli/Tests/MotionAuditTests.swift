@@ -51,6 +51,15 @@ final class MotionAuditTests: XCTestCase {
         }
         var previous: MotionPose?
         let dt = motion.cycleDuration / Double(steps)
+        // The swing itself (from just before contact into the start of the follow-through) is the one moment
+        // a real arm moves explosively; elsewhere the elbow must move calmly.
+        let contactIndex = motion.keyframes.firstIndex { $0.phase == "motion.phase.contact" || $0.phase == "motion.phase.punch" }
+        func inSwing(_ t: Double) -> Bool {
+            guard let i = contactIndex else { return false }
+            let start = motion.progress(atKeyframe: i) - motion.keyframes[max(0, i - 1)].duration * 0.3 / motion.cycleDuration
+            let end = motion.progress(atKeyframe: i) + (motion.keyframes[i].duration + motion.keyframes[(i + 1) % motion.keyframes.count].duration * 0.4) / motion.cycleDuration
+            return t >= start && t <= end
+        }
         for k in 0..<steps {
             let t = Double(k) / Double(steps)
             let p = motion.pose(at: t)
@@ -107,6 +116,35 @@ final class MotionAuditTests: XCTestCase {
             }
             // 10. Shoulder vs hip separation beyond what people can do.
             record("shoulder-hip twist over 70°", abs(p.chestYaw - p.hipYaw) - 70, t)
+            // 14. Elbows: natural range, pointing away from the body, no "chicken wing" when the hand is low.
+            for (name, shoulder, elbow, hand) in [("right", p.rightShoulder, p.rightElbow, p.rightHand), ("left", p.leftShoulder, p.leftElbow, p.leftHand)] {
+                let upper = (elbow - shoulder).normalized, lower = (hand - elbow).normalized
+                let flexion = acos(max(-1, min(1, upper.dot(lower)))) * 180 / .pi   // 0 = straight arm
+                record("\(name) elbow over-bent (°)", flexion - 151, t)
+                // The free arm is used for balance and pointing; it shouldn't stay folded tight against the shoulder.
+                if name == "left" && p.leftGrip == nil && !(motion.id == "serve" && t < 0.1) { record("left arm folded tight (°)", flexion - 125, t) }
+                let axis = (hand - shoulder).normalized
+                let pole = ((elbow - shoulder) - axis * (elbow - shoulder).dot(axis))
+                if pole.length > 0.03 {
+                    let direction = pole.normalized
+                    let towardBody = (p.chest - (shoulder + hand) * 0.5).horizontal.normalized
+                    record("\(name) elbow points into the chest", direction.dot(towardBody) - 0.65, t)
+                    if hand.y < shoulder.y - 0.1 { record("\(name) elbow lifted while hand is low", direction.y - 0.55, t) }
+                }
+                if let q = previous {
+                    let qShoulder = name == "right" ? q.rightShoulder : q.leftShoulder
+                    let qElbow = name == "right" ? q.rightElbow : q.leftElbow, qHand = name == "right" ? q.rightHand : q.leftHand
+                    let qAxis = (qHand - qShoulder).normalized
+                    let qPole = (qElbow - qShoulder) - qAxis * (qElbow - qShoulder).dot(qAxis)
+                    // A swivel only shows when the arm is visibly bent; also track how fast the elbow itself travels.
+                    if flexion > 30 && pole.length > 0.03 && qPole.length > 0.03 {
+                        let swivel = acos(max(-1, min(1, pole.normalized.dot(qPole.normalized)))) * 180 / .pi
+                        record("\(name) elbow flips (°/s)", swivel / dt - (inSwing(t) ? 9000 : 2500), t)
+                    }
+                    let elbowSpeed = ((elbow - shoulder) - (qElbow - qShoulder)).length / dt
+                    record("\(name) elbow jumps (m/s)", elbowSpeed - (inSwing(t) ? 40 : 8), t)
+                }
+            }
             // 11. Racket tip into the court.
             record("racket into court", 0.04 - min(p.racketTip.y, p.racketHeadCenter.y - 0.13), t)
             // 12. Torso leaning too far.
@@ -137,6 +175,7 @@ final class MotionAuditTests: XCTestCase {
         let everyone = StrokeMotion.all + StrokeMotion.all.map { $0.mirrored() }
         let problems = everyone.flatMap { Self.audit($0) }.filter { finding in
             !(finding.check.hasSuffix("forearm inside torso") && finding.worst <= 0.2)
+                && !(finding.check == "left arm folded tight (°)" && finding.worst <= 5)
         }
         XCTAssertTrue(problems.isEmpty, problems.map(\.description).joined(separator: "\n"))
     }

@@ -101,7 +101,7 @@ struct PracticeView: View {
                     }
                     Button(L10n.text("Vazgeç"), role: .cancel) {}
                 } message: { Text(L10n.text("practice.existing.body")) }
-                .fullScreenCover(item: $selected) { PracticeSessionView(plan: $0).ralliPresentationEnvironment() }
+                .navigationDestination(item: $selected) { PracticeSessionView(plan: $0).ralliPresentationEnvironment() }
         }
     }
     private func sessionRow(_ plan: PracticePlan) -> some View {

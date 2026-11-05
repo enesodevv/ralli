@@ -7,47 +7,74 @@ enum AppLinks {
     static let supportEmail: String? = nil
 }
 
-/// About Ralli: privacy policy (readable in the app, no network needed), safety, content sources,
-/// permissions and version. Reachable from Today.
-struct AboutView: View {
+/// Settings: everything a player can change in one place, plus privacy, safety, sources and version.
+/// Reachable from the gear on Today.
+struct SettingsView: View {
+    @EnvironmentObject private var store: PlayerStore
     @Environment(\.dismiss) private var dismiss
     @Environment(\.openURL) private var openURL
+    @AppStorage("spokenPracticeCues") private var spokenCues = false
+    @State private var editingPreferences = false
     private var version: String {
         let info = Bundle.main.infoDictionary
         return "\(info?["CFBundleShortVersionString"] as? String ?? "1.0") (\(info?["CFBundleVersion"] as? String ?? "1"))"
     }
+    private var hand: Binding<String> {
+        Binding(get: { store.preferences.handedness ?? "right" }, set: { value in
+            var preferences = store.preferences
+            preferences.handedness = value
+            _ = store.savePreferences(preferences)
+        })
+    }
+    private func openSystemSettings() {
+        if let url = URL(string: UIApplication.openSettingsURLString) { openURL(url) }
+    }
     var body: some View {
         NavigationStack {
             List {
-                Section {
-                    VStack(alignment: .leading, spacing: 6) {
-                        Text("ralli.").font(RalliTheme.title(30)).tracking(-1.2)
-                        Text(L10n.text("about.tagline")).font(.subheadline).foregroundStyle(RalliTheme.muted)
-                    }.padding(.vertical, 6)
+                Section(L10n.text("settings.player")) {
+                    Button { editingPreferences = true } label: {
+                        LabeledContent {
+                            Text("\(L10n.text(store.preferences.focus)) · \(L10n.minutes(store.preferences.minutes))")
+                        } label: { Label(L10n.text("settings.preferences"), systemImage: "slider.horizontal.3") }
+                    }.foregroundStyle(RalliTheme.ink)
+                    Picker(selection: hand) {
+                        Text(L10n.text("setup.hand.right")).tag("right")
+                        Text(L10n.text("setup.hand.left")).tag("left")
+                    } label: { Label(L10n.text("setup.hand"), systemImage: "hand.raised") }
                 }
                 Section {
-                    NavigationLink { PrivacyPolicyView() } label: { Label(L10n.text("about.privacy"), systemImage: "hand.raised") }
-                    Button {
-                        if let url = URL(string: UIApplication.openSettingsURLString) { openURL(url) }
-                    } label: { Label(L10n.text("about.permissions"), systemImage: "gearshape") }
+                    Toggle(isOn: $spokenCues) { Label(L10n.text("practice.sound"), systemImage: "speaker.wave.2") }.tint(RalliTheme.clay)
+                } footer: { Text(L10n.text("practice.sound.hint")) }
+                Section {
+                    Button(action: openSystemSettings) { Label(L10n.text("settings.language"), systemImage: "globe") }
+                    Button(action: openSystemSettings) { Label(L10n.text("about.permissions"), systemImage: "mic") }
+                } header: { Text(L10n.text("settings.app")) } footer: { Text(L10n.text("settings.language.hint")) }
+                Section(L10n.text("settings.about")) {
+                    NavigationLink { PrivacyPolicyView() } label: { Label(L10n.text("about.privacy"), systemImage: "lock.shield") }
+                    NavigationLink { SafetyAndSourcesView() } label: { Label(L10n.text("settings.safety"), systemImage: "heart.text.square") }
                     if let email = AppLinks.supportEmail, let url = URL(string: "mailto:\(email)") {
                         Link(destination: url) { Label(L10n.text("about.contact"), systemImage: "envelope") }
                     }
-                }
-                Section(L10n.text("about.safety.title")) {
-                    Text(L10n.text("practice.before")).font(.callout)
-                }
-                Section(L10n.text("about.sources.title")) {
-                    Text(L10n.text("about.sources.body")).font(.callout)
-                }
-                Section {
                     LabeledContent(L10n.text("about.version"), value: version)
                 }
             }
             .scrollContentBackground(.hidden).background(RalliTheme.paper).tint(RalliTheme.ink)
-            .navigationTitle(L10n.text("about.title")).navigationBarTitleDisplayMode(.inline)
+            .navigationTitle(L10n.text("settings.title")).navigationBarTitleDisplayMode(.inline)
             .toolbar { ToolbarItem(placement: .confirmationAction) { Button(L10n.text("Tamam")) { dismiss() } } }
+            .sheet(isPresented: $editingPreferences) { PlayerPreferencesView(preferences: store.preferences).ralliPresentationEnvironment() }
         }
+    }
+}
+
+struct SafetyAndSourcesView: View {
+    var body: some View {
+        List {
+            Section(L10n.text("about.safety.title")) { Text(L10n.text("practice.before")).font(.callout) }
+            Section(L10n.text("about.sources.title")) { Text(L10n.text("about.sources.body")).font(.callout) }
+        }
+        .scrollContentBackground(.hidden).background(RalliTheme.paper)
+        .navigationTitle(L10n.text("settings.safety")).navigationBarTitleDisplayMode(.inline)
     }
 }
 

@@ -116,7 +116,9 @@ struct MotionPose: Equatable {
         let f = q.dot(axes.front), s = q.dot(axes.side)
         let r = ((f / rf) * (f / rf) + (s / rs) * (s / rs)).squareRoot()
         let outward = axes.front * (f / (rf * rf)) + axes.side * (s / (rs * rs))
-        return (1 - r, outward.length > 1e-6 ? outward.normalized : axes.front)
+        // Fade in over the last few centimetres at the ends, so a hand never "pops" out at the shoulders or hips.
+        let fade = min(1, max(0, min((along - 0.02) / 0.06, (length + 0.06 - along) / 0.06)))
+        return (r < 1 ? (1 - r) * fade : 1 - r, outward.length > 1e-6 ? outward.normalized : axes.front)
     }
 
     // MARK: Solving
@@ -124,12 +126,12 @@ struct MotionPose: Equatable {
         var out = self
         // Hands never inside the head or torso.
         out.rightHand = out.clearOfBody(out.rightHand)
-        (out.rightElbow, out.rightHand) = out.arm(from: out.rightShoulder, to: out.rightHand, hint: rightElbow)
+        (out.rightElbow, out.rightHand) = out.arm(from: out.rightShoulder, to: out.rightHand, isHittingArm: true)
         out.racketDir = out.racketClearOfBody()
         // Support hand: held on the racket, or kept clear of the body.
         if let grip = leftGrip { out.leftHand = out.rightHand + out.shaft * grip }
         else { out.leftHand = out.clearOfBody(out.leftHand) }
-        (out.leftElbow, out.leftHand) = out.arm(from: out.leftShoulder, to: out.leftHand, hint: leftElbow)
+        (out.leftElbow, out.leftHand) = out.arm(from: out.leftShoulder, to: out.leftHand, isHittingArm: false)
         // Knees always bend forward, over the toes.
         let kneeForward = Self.facing(hipYaw) * 0.35
         (out.rightKnee, out.rightAnkle) = Self.limb(from: rightHip, to: rightAnkle, hint: (rightHip + rightAnkle) * 0.5 + kneeForward, upper: Self.thigh, lower: Self.shin)
@@ -138,13 +140,49 @@ struct MotionPose: Equatable {
         if ballInLeftHand { out.ball = out.leftHand + V3(0, 0.07, 0); out.ballInLeftHand = false }
         return out
     }
-    /// Arm IK that also keeps the elbow and the middle of the forearm out of the torso.
-    private func arm(from shoulder: V3, to hand: V3, hint: V3) -> (V3, V3) {
-        var (elbow, end) = Self.limb(from: shoulder, to: hand, hint: hint, upper: Self.upperArm, lower: Self.forearm)
-        for _ in 0..<3 {
+    /// Where an elbow naturally points, derived from the body rather than authored per pose,
+    /// so it changes smoothly frame to frame and never snaps to the other side.
+    /// Away from the chest, downwards when the hand is low, and a little behind the body.
+    func naturalElbowPole(shoulder: V3, hand: V3, isHittingArm: Bool) -> V3 {
+        let axes = torsoAxes
+        let chestCenter = pelvis.mix(chest, 0.8)
+        let armSide = hittingSide(chestYaw) * (isHittingArm ? 1 : -1)
+        // Always lean towards the arm's own side: when the hand crosses in front of the chest,
+        // "away from the body" alone has no stable direction and the elbow would swing round.
+        let away = ((shoulder + hand) * 0.5 - chestCenter).horizontal * 0.7 + armSide * 0.25
+        // Hand below the shoulder: elbow hangs down. Hand overhead: elbow points out to the side.
+        let drop = min(1, max(0, (shoulder.y - hand.y) / 0.45 + 0.35))
+        return away.normalized * 1.0 + V3(0, -1, 0) * (0.25 + 1.1 * drop) - axes.front * 0.2
+    }
+    /// Arm IK with an anatomical elbow: limited bend, natural pole, and kept out of the torso.
+    private func arm(from shoulder: V3, to hand: V3, isHittingArm: Bool) -> (V3, V3) {
+        // An elbow bends at most ~150°: the hand can't be pulled closer to the shoulder than that allows.
+        let a = Self.upperArm, b = Self.forearm
+        let minReach = (a * a + b * b - 2 * a * b * cos(30 * Double.pi / 180)).squareRoot()
+        var target = hand
+        // A hand passing right by its own shoulder travels in front of the face and chest instead.
+        let comfortable = 0.26
+        let reachNow = (target - shoulder).length
+        if reachNow < comfortable { target = target + torsoAxes.front * (comfortable - reachNow) }
+        if (target - shoulder).length < minReach { target = shoulder + (target - shoulder).normalized * minReach }
+        // When the natural pole lines up with the arm itself (hand drawn towards the shoulder along it),
+        // the bend direction is undefined; blend in a second natural direction (elbow forward and out).
+        let axis = (target - shoulder).normalized
+        func across(_ v: V3) -> V3 { v - axis * v.dot(axis) }
+        let primary = across(naturalElbowPole(shoulder: shoulder, hand: target, isHittingArm: isHittingArm).normalized)
+        let armSide = hittingSide(chestYaw) * (isHittingArm ? 1 : -1)
+        // A small, constant share of "down and to the arm's own side" (which agrees with the natural pole)
+        // decides only when the main pole lines up with the arm; it never pulls against it.
+        let secondary = across((armSide * 0.7 + V3(0, -0.7, 0)).normalized)
+        let bend = primary + secondary * 0.2
+        var (elbow, end) = Self.limb(from: shoulder, to: target, hint: shoulder + bend, upper: a, lower: b)
+        // Keep the elbow and forearm off the chest with a soft push that grows as they get close,
+        // rather than an on/off correction that would make the elbow jump between frames.
+        for _ in 0..<2 {
             let worst = [elbow, elbow.mix(end, 0.5)].map { torsoDepth(of: $0, margin: 0.035) }.max { $0.depth < $1.depth }!
-            guard worst.depth > 0 else { break }
-            (elbow, end) = Self.limb(from: shoulder, to: end, hint: elbow + worst.outward * 0.4, upper: Self.upperArm, lower: Self.forearm)
+            let strength = MotionPose.smooth((worst.depth + 0.35) / 0.55)
+            guard strength > 0 else { break }
+            (elbow, end) = Self.limb(from: shoulder, to: target, hint: shoulder + bend.normalized + worst.outward * (strength * 1.2), upper: a, lower: b)
         }
         return (elbow, end)
     }
@@ -153,7 +191,7 @@ struct MotionPose: Equatable {
         let fromHead = p - head
         if fromHead.length < 0.17 { p = head + fromHead.normalized * 0.17 }
         let (depth, outward) = torsoDepth(of: p, margin: 0.05)
-        if depth > 0 { p = p + outward * (depth * (Self.torsoSide + 0.05) + 0.01) }
+        if depth > 0 { p = p + outward * (depth * (Self.torsoSide + 0.05)) }
         return p
     }
     /// Turns the racket around the hand until no part of it is inside the head or the torso.
@@ -222,14 +260,18 @@ struct MotionPose: Equatable {
         }
         out.rightAnkle = step(from: b.rightAnkle, to: c.rightAnkle, t)
         out.leftAnkle = step(from: b.leftAnkle, to: c.leftAnkle, t)
-        // Left-hand grip blends between holding the racket and moving freely.
-        switch (b.leftGrip, c.leftGrip) {
-        case let (g0?, g1?): out.leftGrip = g0 + (g1 - g0) * t
-        case let (g0?, nil):
-            out.leftGrip = nil; out.leftHand = (out.rightHand + out.shaft * g0).mix(out.leftHand, smooth(t))
-        case let (nil, g1?):
-            out.leftGrip = nil; out.leftHand = out.leftHand.mix(out.rightHand + out.shaft * g1, smooth(t))
-        default: break
+        // The left hand: on the racket at both ends, it simply follows the grip (solved later).
+        // Otherwise the arm swings around its shoulder: the hand keeps its distance and travels on an arc,
+        // instead of cutting a straight line past the shoulder with the arm folding up.
+        if b.leftGrip != nil && c.leftGrip != nil {
+            out.leftGrip = b.leftGrip! + (c.leftGrip! - b.leftGrip!) * t
+        } else {
+            func handOf(_ pose: MotionPose) -> V3 { pose.leftGrip.map { pose.rightHand + pose.shaft * $0 } ?? pose.leftHand }
+            let from = b.toChest(handOf(b) - b.leftShoulder + b.chest, isPoint: true)
+            let to = c.toChest(handOf(c) - c.leftShoulder + c.chest, isPoint: true)
+            let length = from.length + (to.length - from.length) * t
+            out.leftHand = out.leftShoulder + out.fromChest(slerp(from, to, t) * length, isPoint: false)
+            out.leftGrip = nil
         }
         out.ballOnStrings = false; out.ballInLeftHand = false
         switch (b.ball, c.ball) {
@@ -408,28 +450,28 @@ extension StrokeMotion {
         .init(phase: "motion.phase.takeback", pose: ready.with {
             $0.pelvis = V3(0.0, 0.86, 0.02); $0.chest = V3(-0.02, 1.36, 0.03); $0.chestYaw = -80; $0.hipYaw = -45
             $0.rightHand = V3(-0.3, 1.24, 0.36); $0.rightElbow = V3(-0.2, 1.02, 0.46); $0.racketDir = V3(-0.6, 0.65, 0.3); $0.racketFace = V3(0, 0, 1)
-            $0.leftGrip = nil; $0.leftHand = V3(0.42, 1.32, 0.28); $0.leftElbow = V3(0.24, 1.18, 0.0)
+            $0.leftGrip = nil; $0.leftHand = V3(0.62, 1.30, 0.30); $0.leftElbow = V3(0.24, 1.18, 0.0)
             $0.rightAnkle = V3(-0.05, 0.09, 0.34); $0.leftAnkle = V3(0.42, 0.09, -0.05)
             $0.ball = V3(4.2, 1.45, 1.0)
         }, duration: 0.75),
         .init(phase: "motion.phase.drop", pose: ready.with {
             $0.pelvis = V3(0.08, 0.84, 0.03); $0.chest = V3(0.05, 1.34, 0.04); $0.chestYaw = -68; $0.hipYaw = -30
             $0.rightHand = V3(-0.28, 0.98, 0.48); $0.rightElbow = V3(-0.14, 1.0, 0.58); $0.racketDir = V3(-0.55, -0.5, 0.35); $0.racketFace = V3(0, 0.3, 1)
-            $0.leftGrip = nil; $0.leftHand = V3(0.45, 1.2, 0.2); $0.leftElbow = V3(0.28, 1.12, -0.02)
+            $0.leftGrip = nil; $0.leftHand = V3(0.64, 1.22, 0.14); $0.leftElbow = V3(0.28, 1.12, -0.02)
             $0.rightAnkle = V3(-0.05, 0.09, 0.34); $0.leftAnkle = V3(0.42, 0.09, -0.05)
             $0.ball = V3(1.9, 1.12, 0.95)
         }, duration: 0.32),
         .init(phase: "motion.phase.contact", pose: ready.with {
             $0.pelvis = V3(0.16, 0.88, 0.0); $0.chest = V3(0.22, 1.38, 0.0); $0.chestYaw = -12; $0.hipYaw = -5
             $0.rightHand = V3(0.5, 1.0, 0.5); $0.rightElbow = V3(0.28, 1.02, 0.52); $0.racketDir = V3(0.28, 0.06, 0.96); $0.racketFace = V3(1, 0.1, 0)
-            $0.leftGrip = nil; $0.leftHand = V3(0.26, 1.12, -0.4); $0.leftElbow = V3(0.14, 1.18, -0.36)
+            $0.leftGrip = nil; $0.leftHand = V3(0.36, 1.10, -0.46); $0.leftElbow = V3(0.14, 1.18, -0.36)
             $0.rightAnkle = V3(-0.03, 0.13, 0.33); $0.leftAnkle = V3(0.42, 0.09, -0.05)
             $0.ballOnStrings = true
         }, duration: 0.2),
         .init(phase: "motion.phase.follow", pose: ready.with {
             $0.pelvis = V3(0.19, 0.89, -0.01); $0.chest = V3(0.26, 1.39, -0.01); $0.chestYaw = 15; $0.hipYaw = 8
             $0.rightHand = V3(0.66, 1.36, -0.04); $0.rightElbow = V3(0.6, 1.18, 0.32); $0.racketDir = V3(0.2, 0.85, -0.5); $0.racketFace = V3(0.4, 0, 1)
-            $0.leftGrip = nil; $0.leftHand = V3(0.3, 1.15, -0.42); $0.leftElbow = V3(0.18, 1.18, -0.38)
+            $0.leftGrip = nil; $0.leftHand = V3(0.38, 1.12, -0.48); $0.leftElbow = V3(0.18, 1.18, -0.38)
             $0.rightAnkle = V3(0.08, 0.15, 0.28); $0.leftAnkle = V3(0.42, 0.09, -0.05)
             $0.ball = V3(1.6, 1.25, 0.3)
         }, duration: 0.24),
@@ -480,8 +522,9 @@ extension StrokeMotion {
         .init(phase: "motion.phase.stance", pose: serveStance, duration: 0.7),
         .init(phase: "motion.phase.toss", pose: serveStance.with {
             $0.pelvis = V3(0.0, 0.88, 0.02); $0.chest = V3(-0.03, 1.38, 0.03); $0.chestYaw = -85
-            $0.rightHand = V3(-0.42, 0.96, 0.12); $0.rightElbow = V3(-0.3, 1.12, 0.2); $0.racketDir = V3(-0.55, -0.55, 0.15); $0.racketFace = V3(0, 0, 1)
-            $0.leftGrip = nil; $0.leftHand = V3(0.22, 1.55, 0.02); $0.leftElbow = V3(0.12, 1.32, 0.1)
+            // Pendulum: the racket arm hangs long and nearly straight behind, as in a real serve.
+            $0.rightHand = V3(-0.50, 0.88, 0.14); $0.rightElbow = V3(-0.3, 1.12, 0.2); $0.racketDir = V3(-0.55, -0.55, 0.15); $0.racketFace = V3(0, 0, 1)
+            $0.leftGrip = nil; $0.leftHand = V3(0.46, 1.86, 0.07); $0.leftElbow = V3(0.12, 1.32, 0.1)
             $0.ballInLeftHand = true
         }, duration: 0.5),
         .init(phase: "motion.phase.trophy", pose: serveStance.with {
@@ -493,7 +536,7 @@ extension StrokeMotion {
         .init(phase: "motion.phase.racketdrop", pose: serveStance.with {
             $0.pelvis = V3(0.1, 0.86, 0.02); $0.chest = V3(0.06, 1.36, 0.04); $0.chestYaw = -55
             $0.rightHand = V3(-0.2, 1.42, -0.15); $0.rightElbow = V3(-0.04, 1.7, 0.1); $0.racketDir = V3(-0.05, -0.9, -0.4); $0.racketFace = V3(1, 0, 0)
-            $0.leftGrip = nil; $0.leftHand = V3(0.32, 1.48, -0.22); $0.leftElbow = V3(0.2, 1.34, -0.08)
+            $0.leftGrip = nil; $0.leftHand = V3(0.50, 1.62, -0.20); $0.leftElbow = V3(0.2, 1.34, -0.08)
             $0.ballInLeftHand = false; $0.ball = V3(0.46, 2.78, 0.04)
         }, duration: 0.28),
         .init(phase: "motion.phase.contact", pose: serveStance.with {
@@ -522,7 +565,7 @@ extension StrokeMotion {
         .init(phase: "motion.phase.punch", pose: netReady.with {
             $0.pelvis = V3(0.22, 0.84, 0.0); $0.chest = V3(0.32, 1.33, 0.0); $0.chestYaw = -20; $0.hipYaw = -10
             $0.rightHand = V3(0.62, 1.26, 0.44); $0.rightElbow = V3(0.4, 1.08, 0.44); $0.racketDir = V3(0.35, 0.75, 0.5); $0.racketFace = V3(1, 0.1, -0.25)
-            $0.leftGrip = nil; $0.leftHand = V3(0.55, 1.15, -0.05); $0.leftElbow = V3(0.38, 1.08, -0.24)
+            $0.leftGrip = nil; $0.leftHand = V3(0.68, 1.15, -0.02); $0.leftElbow = V3(0.38, 1.08, -0.24)
             $0.leftAnkle = V3(0.5, 0.09, -0.14); $0.rightAnkle = V3(0.04, 0.12, 0.33)
             $0.ballOnStrings = true
         }, duration: 0.32),

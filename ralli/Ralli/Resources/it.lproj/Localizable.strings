@@ -510,3 +510,12 @@
 "privacy.updated" = "Ultimo aggiornamento: novembre 2026";
 "practice.replace" = "Scartarla e iniziare questa";
 "personal.setup.short" = "Imposta";
+"settings.title" = "Impostazioni";
+"settings.player" = "Il tuo gioco";
+"settings.preferences" = "Preferenze di allenamento";
+"settings.app" = "App";
+"settings.language" = "Lingua";
+"settings.language.hint" = "Lingua e permessi si cambiano nelle Impostazioni di iOS, alla voce Ralli.";
+"settings.about" = "Informazioni";
+"settings.safety" = "Sicurezza e fonti";
+"practice.back" = "Indietro";

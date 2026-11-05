@@ -30,12 +30,13 @@ struct PlayerPreferencesView: View {
                         ForEach([10, 15, 20, 30], id: \.self) { Text(L10n.minutes($0)).tag($0) }
                     }
                 }
+                // The question is the section header, so only the two answers look tappable.
                 Section {
                     Picker(L10n.text("setup.level"), selection: $value.level) {
                         Text(L10n.text("setup.foundation")).tag("foundation")
                         Text(L10n.text("setup.developing")).tag("developing")
-                    }.pickerStyle(.inline)
-                } footer: { Text(L10n.text("setup.level.body")) }
+                    }.pickerStyle(.inline).labelsHidden()
+                } header: { Text(L10n.text("setup.level")) } footer: { Text(L10n.text("setup.level.body")) }
                 Section {
                     if let recommendation = PracticeSelector.recommendation(for: value) {
                         Text(recommendation.plan.title).font(RalliTheme.title(24))

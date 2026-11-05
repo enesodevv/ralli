@@ -107,3 +107,8 @@ struct PracticeRecord: Identifiable, Codable {
     var noteID: UUID? = nil
     var benchmarkVersion: Int? = nil
 }
+
+extension PracticePlan: Hashable {
+    static func == (lhs: PracticePlan, rhs: PracticePlan) -> Bool { lhs.id == rhs.id }
+    func hash(into hasher: inout Hasher) { hasher.combine(id) }
+}

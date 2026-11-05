@@ -22,7 +22,7 @@ settings:
     # PRODUCT_BUNDLE_IDENTIFIER should use a domain you own (e.g. app.ralli.ios).
     MARKETING_VERSION: 1.0.0
     CURRENT_PROJECT_VERSION: 1
-    DEVELOPMENT_TEAM: ""
+    DEVELOPMENT_TEAM: <TEAM_ID>
     INFOPLIST_KEY_ITSAppUsesNonExemptEncryption: NO
     INFOPLIST_KEY_LSApplicationCategoryType: public.app-category.sports
 targets:
@@ -30,6 +30,9 @@ targets:
     type: application
     platform: iOS
     sources: [Ralli]
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.enesodev.Ralli
   RalliUITests:
     type: bundle.ui-testing
     platform: iOS

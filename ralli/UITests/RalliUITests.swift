@@ -209,9 +209,11 @@ final class RalliUITests: XCTestCase {
     }
 
     // MARK: About & accessibility
-    func testAboutShowsPrivacyPolicyOffline() {
+    func testSettingsShowPrivacyPolicyOffline() {
         launch()
-        app.buttons["About Ralli"].tap()
+        app.buttons["Settings"].tap()
+        XCTAssertTrue(app.navigationBars["Settings"].waitForExistence(timeout: 5))
+        assertShows("Practice preferences")
         tapButton("Privacy policy")
         assertShows("In short")
         assertShows("Ralli never saves audio.")
@@ -262,5 +264,42 @@ final class RalliUITests: XCTestCase {
             XCTAssertEqual(app.state, .runningForeground, language)
             app.terminate()
         }
+    }
+
+    // MARK: Navigation
+    func testSwipingFromTheLeftEdgeGoesBack() {
+        launch()
+        openDrill("Shadow swings")
+        swipeBackFromEdge()
+        XCTAssertTrue(app.textFields["Search sessions"].waitForExistence(timeout: 5), "back on the library")
+    }
+    func testSwipeBackIsBlockedWhileASessionRuns() {
+        launch()
+        openDrill("Shadow swings")
+        tapButton("Start session")
+        swipeBackFromEdge()
+        assertShows("Step 1 of 3")
+        XCTAssertFalse(app.textFields["Search sessions"].exists)
+    }
+    func testHandednessCanBeChangedInSettings() {
+        launch()
+        app.buttons["Settings"].tap()
+        // A menu picker reads as "Which hand do you play with?, Right".
+        let picker = app.buttons.matching(NSPredicate(format: "label BEGINSWITH %@", "Which hand")).firstMatch
+        XCTAssertTrue(picker.waitForExistence(timeout: 5))
+        picker.tap()
+        let left = app.buttons["Left"].firstMatch
+        XCTAssertTrue(left.waitForExistence(timeout: 5))
+        left.tap()
+        app.buttons["OK"].firstMatch.tap()
+        openDrill("Serve with intention")
+        let lefty = app.buttons["Left-handed"].firstMatch
+        var tries = 0
+        while !lefty.exists && tries < 6 { app.swipeUp(velocity: .slow); tries += 1 }
+        XCTAssertTrue(lefty.isSelected, "settings and motion player share the same preference")
+    }
+    private func swipeBackFromEdge() {
+        let start = app.coordinate(withNormalizedOffset: CGVector(dx: 0.01, dy: 0.5))
+        start.press(forDuration: 0.05, thenDragTo: app.coordinate(withNormalizedOffset: CGVector(dx: 0.85, dy: 0.5)))
     }
 }

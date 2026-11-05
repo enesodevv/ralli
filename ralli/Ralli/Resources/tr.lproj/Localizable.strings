@@ -510,3 +510,12 @@
 "privacy.updated" = "Son güncelleme: Kasım 2026";
 "practice.replace" = "Onu sil ve bunu başlat";
 "personal.setup.short" = "Ayarla";
+"settings.title" = "Ayarlar";
+"settings.player" = "Oyunun";
+"settings.preferences" = "Çalışma tercihleri";
+"settings.app" = "Uygulama";
+"settings.language" = "Dil";
+"settings.language.hint" = "Dil ve izinler iOS Ayarlar’da, Ralli bölümünden değiştirilir.";
+"settings.about" = "Hakkında";
+"settings.safety" = "Güvenlik ve kaynaklar";
+"practice.back" = "Geri";

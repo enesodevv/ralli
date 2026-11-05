@@ -111,3 +111,11 @@ Simülatör ek doğrulaması: tercihler kaydedildikten sonra Today önerisi değ
 - `RalliUITests` (XCUITest, 13 test) uygulamayı gerçek bir oyuncu gibi kullanır: tanıtım ve tercihler, tanıtımı geçme, arama/filtre/favori, tam seans ve Gelişim kaydı, kaydet-çık ve yeniden açınca geri yükleme, kayıtlı seans varken başka çalışmaya bakma, seansı silme, not yazma/odak yapma/düzenleme/silme, not taslağı, Hakkında ve gizlilik, en büyük yazı boyutu, solak tercihinin hatırlanması, 6 dilde tüm sekmeler.
 - Çalıştırma: `RalliUITests` şeması, bir iPhone simülatöründe (yaklaşık 10 dakika). Testler kendi ayrı veri dosyasını kullanır; gerçek veriye dokunmaz (`-ralli-ui-testing`, `-ralli-reset`, `-ralli-skip-intro`, yalnızca Debug).
 - Testlerin bulduğu ve düzeltilen sorunlar: kayıtlı bir seans varken başka çalışmaların detayı açılmıyordu (artık açılıyor; yalnızca başlatırken "Onu sil ve bunu başlat" sorulur); İngilizcede "1 sessions recorded" dilbilgisi hatası; Bugün ekranındaki "Kendine göre ayarla" iki satıra taşıyordu ("Ayarla"); animasyondaki "Solak" kontrolü kapalıyken düğme olduğu anlaşılmıyordu (açık/kapalı hâli belli bir düğme oldu).
+
+## Telefondan gelen geri bildirim ve doğal dirsekler — 5 Kasım 2026
+- **Not:** `<eski kopya>` eski bir kopyadır. Güncel proje `Desktop/ten/ralli/Ralli.xcodeproj`. İmza: takım `<TEAM_ID>`, kimlik `com.enesodev.Ralli` (`project.yml`).
+- **Geri kaydırma:** çalışma detayı artık normal sayfa olarak açılır; kenardan kaydırınca geri döner. Seans sürerken bu hareket kapalıdır (yanlışlıkla çıkılmasın diye). Detayda alt sekme çubuğu gizlenir.
+- **Ayarlar:** Bugün ekranındaki ⚙︎ düğmesi. İçinde çalışma tercihleri, el seçimi, sesli ipuçları, dil ve izinler (iOS Ayarlar'a gider), gizlilik politikası, güvenlik ve kaynaklar, sürüm.
+- **"Başlangıç noktan":** soru artık bölüm başlığı; yalnızca iki cevap dokunulabilir görünür.
+- **Dirsekler:** dirseğin yönü elle verilen ipucundan değil, anatomik bir kuraldan hesaplanır (gövdeden dışarı, el aşağıdayken aşağı); en fazla 150° bükülür; gövdeye yaklaşınca yumuşakça itilir. Boştaki kol omuz etrafında yay çizer. Dirsek atlamaları saniyede 10.000–30.000°'den doğal aralığa indi. Servis top atışı ve forehand'de boştaki kol uzatıldı.
+- Denetime dirsek kuralları eklendi (dönme hızı, yön, açı, katlanmış kol); `RalliUITests` 16 test.

@@ -83,7 +83,7 @@ struct HomeView: View {
             }.foregroundStyle(RalliTheme.ink).background(RalliTheme.paper).toolbar(.hidden, for: .navigationBar)
                 .sheet(isPresented: $setup) { PlayerPreferencesView(preferences: store.preferences).ralliPresentationEnvironment() }
                 .sheet(isPresented: $composing) { NoteEditor().ralliPresentationEnvironment() }
-                .fullScreenCover(item: $selected) { PracticeSessionView(plan: $0).ralliPresentationEnvironment() }
+                .navigationDestination(item: $selected) { PracticeSessionView(plan: $0).ralliPresentationEnvironment() }
         }
     }
     /// The big editorial headline only greets new players; returning players see their next action first.
@@ -109,9 +109,9 @@ struct HomeView: View {
     }
     private var aboutButton: some View {
         Button { about = true } label: {
-            Image(systemName: "info.circle").ralliFont(size: 18).frame(minWidth: 44, minHeight: 44)
-        }.buttonStyle(.plain).accessibilityLabel(L10n.text("about.title"))
-            .sheet(isPresented: $about) { AboutView().ralliPresentationEnvironment() }
+            Image(systemName: "gearshape").ralliFont(size: 18).frame(minWidth: 44, minHeight: 44)
+        }.buttonStyle(.plain).accessibilityLabel(L10n.text("settings.title"))
+            .sheet(isPresented: $about) { SettingsView().ralliPresentationEnvironment() }
     }
     private func recommendationCard(_ recommendation: PracticeRecommendation) -> some View {
         let plan = recommendation.plan
