@@ -1,8 +1,29 @@
 import SwiftUI
 import UIKit
 
+import SwiftData
+
 @main struct RalliApp: App {
-    @StateObject private var store = PlayerStore()
+    @StateObject private var store = RalliApp.makeStore()
+    /// UI tests run against their own store file so they never touch real data.
+    /// `-ralli-ui-testing` uses that store; adding `-ralli-reset` wipes it and all settings first.
+    private static func makeStore() -> PlayerStore {
+        #if DEBUG
+        let arguments = ProcessInfo.processInfo.arguments
+        if arguments.contains("-ralli-ui-testing") {
+            let url = FileManager.default.temporaryDirectory.appendingPathComponent("ralli-ui-tests.store")
+            if arguments.contains("-ralli-reset") {
+                for suffix in ["", "-shm", "-wal"] { try? FileManager.default.removeItem(at: URL(fileURLWithPath: url.path + suffix)) }
+                if let id = Bundle.main.bundleIdentifier { UserDefaults.standard.removePersistentDomain(forName: id) }
+            }
+            if arguments.contains("-ralli-skip-intro") { UserDefaults.standard.set(true, forKey: "hasSeenIntro") }
+            if let container = try? ModelContainer(for: PlayerArchive.self, configurations: ModelConfiguration(url: url)) {
+                return PlayerStore(container: container)
+            }
+        }
+        #endif
+        return PlayerStore()
+    }
     var body: some Scene {
         WindowGroup {
             #if DEBUG

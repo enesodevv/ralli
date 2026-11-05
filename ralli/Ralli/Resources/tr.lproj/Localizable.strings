@@ -226,7 +226,7 @@
 "practice.suspend" = "Kaydet ve çık";
 "practice.discard" = "Çalışmayı sil";
 "practice.existing" = "Kaydedilmiş çalışman var";
-"practice.existing.body" = "Farklı bir çalışmaya başlamadan önce kayıtlı çalışmanı bitir ya da sil.";
+"practice.existing.body" = "Aynı anda tek bir çalışma kaydedilebilir. Onu Bugün ekranından sürdür ya da silip bunu başlat.";
 "practice.resumed" = "Son kayıt noktasından, duraklatılmış olarak açıldı. Hazır olduğunda sürdür.";
 "practice.preconditions" = "Başlamadan önce";
 "prerequisite.rally" = "Rahat tempoda ralli sürdürebilen oyuncular için. Henüz hazır değilsen solo temel çalışmalardan başla.";
@@ -508,3 +508,5 @@
 "privacy.rights.title" = "Kontrol sende";
 "privacy.rights.body" = "Uygulamada her notu ya da çalışmayı düzenleyebilir veya silebilir, izinleri iOS Ayarlar'dan değiştirebilir ya da her şeyi kaldırmak için uygulamayı silebilirsin. GDPR veya KVKK kapsamındaki başvurular için Ralli'nin App Store sayfasındaki iletişim bilgisini kullan.";
 "privacy.updated" = "Son güncelleme: Kasım 2026";
+"practice.replace" = "Onu sil ve bunu başlat";
+"personal.setup.short" = "Ayarla";

@@ -30,6 +30,16 @@ targets:
     type: application
     platform: iOS
     sources: [Ralli]
+  RalliUITests:
+    type: bundle.ui-testing
+    platform: iOS
+    sources: [UITests]
+    dependencies:
+      - target: Ralli
+    settings:
+      base:
+        GENERATE_INFOPLIST_FILE: YES
+        TEST_TARGET_NAME: Ralli
   RalliPersistenceTests:
     type: bundle.unit-test
     platform: macOS
@@ -72,3 +82,11 @@ schemes:
       debugEnabled: false
       commandLineArguments:
         "-ralli-accessibility-qa": true
+  RalliUITests:
+    build:
+      targets:
+        Ralli: all
+        RalliUITests: [test]
+    test:
+      targets:
+        - RalliUITests

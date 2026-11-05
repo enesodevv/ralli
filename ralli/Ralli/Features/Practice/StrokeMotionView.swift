@@ -93,14 +93,27 @@ struct StrokeMotionPlayer: View {
         }.ralliFont(size: 14, weight: .medium).tint(RalliTheme.ink)
     }
     /// Quick switch between right- and left-handed views; saved as the player's preference.
+    /// Quick switch between right- and left-handed views; saved as the player's preference.
+    /// Drawn as a clear on/off pill so it reads as a control, not a label.
     private var handednessToggle: some View {
-        Toggle(isOn: Binding(get: { store.preferences.isLeftHanded }, set: { left in
+        let left = store.preferences.isLeftHanded
+        return Button {
             var value = store.preferences
-            value.handedness = left ? "left" : "right"
+            value.handedness = left ? "right" : "left"
             _ = store.savePreferences(value)
-        })) { Label(L10n.text("motion.lefty"), systemImage: "hand.raised") }
-            .toggleStyle(.button).frame(minHeight: 44)
-            .accessibilityHint(L10n.text("motion.lefty.hint"))
+        } label: {
+            HStack(spacing: 8) {
+                Image(systemName: left ? "checkmark.circle.fill" : "circle").accessibilityHidden(true)
+                Text(L10n.text("motion.lefty"))
+            }
+            .padding(.horizontal, 14).frame(minHeight: 44)
+            .foregroundStyle(left ? RalliTheme.paper : RalliTheme.ink)
+            .background(left ? RalliTheme.ink : Color.clear, in: Capsule())
+            .overlay(Capsule().stroke(RalliTheme.ink.opacity(left ? 0 : 0.35), lineWidth: 1))
+        }
+        .buttonStyle(.plain)
+        .accessibilityAddTraits(left ? [.isSelected] : [])
+        .accessibilityHint(L10n.text("motion.lefty.hint"))
     }
     private func play() { startedAt = Date(); playing = true }
     private func pause() {

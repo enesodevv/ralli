@@ -226,7 +226,7 @@
 "practice.suspend" = "Save and leave";
 "practice.discard" = "Discard session";
 "practice.existing" = "You have a saved session";
-"practice.existing.body" = "Finish or discard your saved session before starting a different one.";
+"practice.existing.body" = "Only one session can be saved at a time. Resume it from Today, or discard it to start this one.";
 "practice.resumed" = "Restored and paused at your last checkpoint. Resume when you’re ready.";
 "practice.preconditions" = "Before you start";
 "prerequisite.rally" = "For players who can sustain a comfortable rally. If not, begin with the solo basics.";
@@ -256,7 +256,7 @@
 "progress.no.result" = "No final check recorded";
 "progress.time" = "Recorded session time";
 "progress.linked" = "Linked lesson note";
-"progress.count" = "%d sessions recorded";
+"progress.count" = "Sessions recorded: %d";
 "save.unavailable" = "Storage is unavailable. Please try again.";
 "save.failed" = "Couldn’t save this change. Please try again.";
 "demo.title" = "See how it's done";
@@ -508,3 +508,5 @@
 "privacy.rights.title" = "Your control";
 "privacy.rights.body" = "You can edit or delete any note or session in the app, change permissions in iOS Settings, or delete the app to remove everything. For requests under GDPR or KVKK, use the contact on Ralli's App Store page.";
 "privacy.updated" = "Last updated: November 2026";
+"practice.replace" = "Discard it and start this one";
+"personal.setup.short" = "Set up";

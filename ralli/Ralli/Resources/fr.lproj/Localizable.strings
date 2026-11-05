@@ -226,7 +226,7 @@
 "practice.suspend" = "Enregistrer et quitter";
 "practice.discard" = "Abandonner la séance";
 "practice.existing" = "Tu as une séance enregistrée";
-"practice.existing.body" = "Termine ou abandonne ta séance enregistrée avant d’en commencer une autre.";
+"practice.existing.body" = "Une seule séance peut être enregistrée à la fois. Reprends-la depuis Aujourd’hui ou abandonne-la pour commencer celle-ci.";
 "practice.resumed" = "Restaurée et en pause à ton dernier point de sauvegarde. Reprends quand tu es prêt.";
 "practice.preconditions" = "Avant de commencer";
 "prerequisite.rally" = "Pour les joueurs capables de tenir un échange confortable. Sinon, commence par les bases en solo.";
@@ -508,3 +508,5 @@
 "privacy.rights.title" = "Tu gardes le contrôle";
 "privacy.rights.body" = "Tu peux modifier ou supprimer chaque note ou séance dans l’app, changer les autorisations dans les Réglages d’iOS ou supprimer l’app pour tout effacer. Pour toute demande au titre du RGPD, utilise le contact indiqué sur la page App Store de Ralli.";
 "privacy.updated" = "Dernière mise à jour : novembre 2026";
+"practice.replace" = "L’abandonner et commencer celle-ci";
+"personal.setup.short" = "Régler";

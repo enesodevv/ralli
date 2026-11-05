@@ -29,6 +29,7 @@ struct PracticeSessionView: View {
     @State private var secondsSpent = 0
     @State private var segmentStarted = Date()
     @State private var stepEndSignalled = false
+    @State private var scrollToSession = 0
     @State private var confirmExit = false
     @State private var includeResult = false
     @State private var result = 0
@@ -67,15 +68,15 @@ struct PracticeSessionView: View {
                     if !active {
                         PrimaryButton(title: L10n.text("practice.start"), icon: "play.fill") {
                             guard store.draft == nil || store.draft?.planID == plan.id else { blocked = true; return }
-                            Task { _ = try? await UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .sound]) }
-                            active = true; step = 0; secondsSpent = 0; linkedNoteID = applicableCue?.id; startStep()
-                            Analytics.track(.sessionStarted(planID: plan.id, resumed: false))
-                            if reduceMotion { proxy.scrollTo("session", anchor: .top) }
-                            else { withAnimation { proxy.scrollTo("session", anchor: .top) } }
-                        }.disabled(blocked).padding(.horizontal, 24).padding(.vertical, 12).background(RalliTheme.paper)
+                            beginSession()
+                        }.padding(.horizontal, 24).padding(.vertical, 12).background(RalliTheme.paper)
                     }
                 }
                 .onAppear { restoreDraft() }
+                .onChange(of: scrollToSession) { _, _ in
+                    if reduceMotion { proxy.scrollTo("session", anchor: .top) }
+                    else { withAnimation { proxy.scrollTo("session", anchor: .top) } }
+                }
                 .onReceive(ticker) { _ in
                     refresh()
                     if active && Date().timeIntervalSince(lastCheckpoint) >= 10 { _ = checkpoint() }
@@ -114,7 +115,10 @@ struct PracticeSessionView: View {
                     Button(L10n.text("Devam et"), role: .cancel) {}
                 }
                 .alert(L10n.text("practice.existing"), isPresented: $blocked) {
-                    Button(L10n.text("Tamam")) { dismiss() }
+                    Button(L10n.text("practice.replace"), role: .destructive) {
+                        if store.saveDraft(nil) { beginSession() }
+                    }
+                    Button(L10n.text("Vazgeç"), role: .cancel) {}
                 } message: { Text(L10n.text("practice.existing.body")) }
                 .alert(L10n.text("Kayıt sorunu"), isPresented: Binding(get: { store.persistenceError != nil }, set: { if !$0 { store.persistenceError = nil } })) {
                     Button(L10n.text("Tamam"), role: .cancel) { store.persistenceError = nil }
@@ -295,6 +299,13 @@ struct PracticeSessionView: View {
             UIAccessibility.post(notification: .announcement, argument: String(format: L10n.text("a11y.step"), step + 1, plan.steps.count, plan.steps[step].title))
         } else if spokenCues { voice.speak(plan.steps[step].title + ". " + plan.steps[step].instruction) }
     }
+    private func beginSession() {
+        Task { _ = try? await UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .sound]) }
+        sessionID = UUID()
+        active = true; step = 0; secondsSpent = 0; linkedNoteID = applicableCue?.id; startStep()
+        Analytics.track(.sessionStarted(planID: plan.id, resumed: false))
+        scrollToSession += 1
+    }
     private func advance() {
         accumulate()
         if step < plan.steps.count - 1 { step += 1; startStep() }
@@ -333,7 +344,8 @@ struct PracticeSessionView: View {
     }
     private func restoreDraft() {
         guard let draft = store.draft else { return }
-        guard draft.planID == plan.id, plan.steps.indices.contains(draft.step) else { blocked = true; return }
+        // A saved session for another drill doesn't stop the player from reading this one.
+        guard draft.planID == plan.id, plan.steps.indices.contains(draft.step) else { return }
         sessionID = draft.id; step = draft.step; remaining = draft.remaining; secondsSpent = draft.secondsSpent
         reviewing = draft.reviewing; includeResult = draft.includeResult; result = draft.result; reflection = draft.reflection; linkedNoteID = draft.noteID
         active = true; paused = true; restored = true; stepEndSignalled = draft.remaining <= 0

@@ -226,7 +226,7 @@
 "practice.suspend" = "Sichern und verlassen";
 "practice.discard" = "Einheit verwerfen";
 "practice.existing" = "Du hast eine gesicherte Einheit";
-"practice.existing.body" = "Beende oder verwirf deine gesicherte Einheit, bevor du eine andere startest.";
+"practice.existing.body" = "Es kann nur eine Einheit gesichert sein. Setze sie unter Heute fort oder verwirf sie, um diese zu starten.";
 "practice.resumed" = "Am letzten Sicherungspunkt wiederhergestellt und pausiert. Fahre fort, wenn du bereit bist.";
 "practice.preconditions" = "Bevor du startest";
 "prerequisite.rally" = "Für Spieler, die entspannt Ballwechsel halten können. Wenn nicht, beginne mit den Solo-Grundlagen.";
@@ -508,3 +508,5 @@
 "privacy.rights.title" = "Du hast die Kontrolle";
 "privacy.rights.body" = "Du kannst jede Notiz und jede Einheit in der App bearbeiten oder löschen, Berechtigungen in den iOS-Einstellungen ändern oder die App löschen, um alles zu entfernen. Für Anfragen nach der DSGVO nutze den Kontakt auf der App-Store-Seite von Ralli.";
 "privacy.updated" = "Zuletzt aktualisiert: November 2026";
+"practice.replace" = "Verwerfen und diese starten";
+"personal.setup.short" = "Einrichten";

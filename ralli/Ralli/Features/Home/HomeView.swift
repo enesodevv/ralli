@@ -43,7 +43,7 @@ struct HomeView: View {
                                 .ralliFont(size: 12).foregroundStyle(RalliTheme.muted)
                         }.frame(maxWidth: .infinity, alignment: .leading)
                         Button { setup = true } label: {
-                            Label(L10n.text(store.preferences.configured ? "personal.change" : "personal.setup"), systemImage: "slider.horizontal.3")
+                            Label(L10n.text(store.preferences.configured ? "personal.change" : "personal.setup.short"), systemImage: "slider.horizontal.3").lineLimit(1)
                                 .ralliFont(size: 13, weight: .medium).padding(.horizontal, 14).frame(minHeight: 44)
                                 .background(RalliTheme.surface, in: Capsule())
                         }.buttonStyle(.plain)

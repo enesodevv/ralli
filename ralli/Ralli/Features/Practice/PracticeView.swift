@@ -128,8 +128,8 @@ struct PracticeView: View {
         }.padding(18).background(RalliTheme.surface, in: RoundedRectangle(cornerRadius: RalliTheme.radius))
     }
     private func open(_ plan: PracticePlan) {
-        if let draft = store.draft, draft.planID != plan.id { blocked = true }
-        else { selected = plan }
+        // Browsing is always allowed; only starting a second session is guarded (inside the detail).
+        selected = plan
     }
     private func toggleSaved(_ id: String) {
         var saved = favorites

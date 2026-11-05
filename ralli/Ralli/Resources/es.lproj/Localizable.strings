@@ -226,7 +226,7 @@
 "practice.suspend" = "Guardar y salir";
 "practice.discard" = "Descartar sesión";
 "practice.existing" = "Tienes una sesión guardada";
-"practice.existing.body" = "Termina o descarta tu sesión guardada antes de empezar otra.";
+"practice.existing.body" = "Solo se puede guardar una sesión a la vez. Reanúdala desde Hoy o descártala para empezar esta.";
 "practice.resumed" = "Restaurada y en pausa desde tu último punto guardado. Reanuda cuando quieras.";
 "practice.preconditions" = "Antes de empezar";
 "prerequisite.rally" = "Para jugadores que mantienen un peloteo cómodo. Si no es tu caso, empieza por lo básico en solitario.";
@@ -508,3 +508,5 @@
 "privacy.rights.title" = "Tú tienes el control";
 "privacy.rights.body" = "Puedes editar o eliminar cualquier nota o sesión en la app, cambiar los permisos en Ajustes de iOS o borrar la app para eliminarlo todo. Para solicitudes según el RGPD, usa el contacto de la página de Ralli en el App Store.";
 "privacy.updated" = "Última actualización: noviembre de 2026";
+"practice.replace" = "Descartarla y empezar esta";
+"personal.setup.short" = "Ajustar";

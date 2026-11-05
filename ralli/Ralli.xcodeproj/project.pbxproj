@@ -26,6 +26,7 @@
 		3FF3AFD09D938E999AE02301 /* PlayerContext.swift in Sources */ = {isa = PBXBuildFile; fileRef = FBFB54CA7F91D4E6CB299290 /* PlayerContext.swift */; };
 		41811EABBBD2748FB33E8FFD /* DrillDemonstration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 227C55BAA16A13B11329534E /* DrillDemonstration.swift */; };
 		450AEA25D9A574D581420B48 /* PlayerStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3EF6FA96EE6B6F7ABF38DDC /* PlayerStore.swift */; };
+		55A5E262A042863546C8DB20 /* RalliUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7EB31B6CAFC9DE63941E65A /* RalliUITests.swift */; };
 		58A15F82A4105FF9215CC001 /* RalliApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 408776930DD668AB253E6115 /* RalliApp.swift */; };
 		5D6E2D0A9DA5A23AF4CFDBC9 /* PlayerStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3EF6FA96EE6B6F7ABF38DDC /* PlayerStore.swift */; };
 		5D9C609A3CF4A5D6507E395C /* ProgressViewScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = F91DEB1C8ED1FF4B7D05B50D /* ProgressViewScreen.swift */; };
@@ -50,6 +51,16 @@
 		EAD1B197D92AE890D19DED84 /* CourtPattern.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BE78C83C8C08D2F563EC6F4 /* CourtPattern.swift */; };
 		FA5DA4492F69F4E0D3C91585 /* StrokeMotionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97C57774D3154C913D99D974 /* StrokeMotionTests.swift */; };
 /* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		1774950D5F7FFEE169701F00 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 078462F8DC4D25CB8C3130F4 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = A9E1D52BDF6213A3F26CAE0A;
+			remoteInfo = Ralli;
+		};
+/* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
 		0188B3943444BA70F26A7813 /* PracticeSessionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PracticeSessionView.swift; sourceTree = "<group>"; };
@@ -78,6 +89,7 @@
 		97C57774D3154C913D99D974 /* StrokeMotionTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StrokeMotionTests.swift; sourceTree = "<group>"; };
 		9A5F3FC930D455EA91FEE2EC /* DrillCourtDiagram.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DrillCourtDiagram.swift; sourceTree = "<group>"; };
 		9D1C86A09C2ADFB76FA000C0 /* PlayerArchive.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayerArchive.swift; sourceTree = "<group>"; };
+		A218E545F1E658A9C5B262A8 /* RalliUITests.xctest */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.cfbundle; path = RalliUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		B220BB8163FD4080A9BE9C04 /* StrokeMotion.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StrokeMotion.swift; sourceTree = "<group>"; };
 		B522E411C5AFE863F27573E8 /* tr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = tr; path = tr.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		C3EF6FA96EE6B6F7ABF38DDC /* PlayerStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayerStore.swift; sourceTree = "<group>"; };
@@ -89,6 +101,7 @@
 		D96C183F11153C96C6614945 /* it */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = it; path = it.lproj/Localizable.strings; sourceTree = "<group>"; };
 		DC8CD1833C04F9B990FEE749 /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/Localizable.strings; sourceTree = "<group>"; };
 		E30663D89CB119F6397A183D /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		E7EB31B6CAFC9DE63941E65A /* RalliUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RalliUITests.swift; sourceTree = "<group>"; };
 		E8F07A4B6A3CB5E26786DC8B /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
 		ED6721F820F4FFBA45138534 /* PlayerStoreTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayerStoreTests.swift; sourceTree = "<group>"; };
 		EE15EBFE818F038904FFED65 /* NoteDraft.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoteDraft.swift; sourceTree = "<group>"; };
@@ -145,6 +158,14 @@
 			path = DesignSystem;
 			sourceTree = "<group>";
 		};
+		295948B54D44E4AF8DB36416 /* UITests */ = {
+			isa = PBXGroup;
+			children = (
+				E7EB31B6CAFC9DE63941E65A /* RalliUITests.swift */,
+			);
+			path = UITests;
+			sourceTree = "<group>";
+		};
 		45595F17078B088B7757AB8E /* Ralli */ = {
 			isa = PBXGroup;
 			children = (
@@ -161,6 +182,7 @@
 			children = (
 				73147B03EF9C2F2820378DEA /* Ralli.app */,
 				C78EA77BE79639AE30744DBC /* RalliPersistenceTests.xctest */,
+				A218E545F1E658A9C5B262A8 /* RalliUITests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -170,6 +192,7 @@
 			children = (
 				45595F17078B088B7757AB8E /* Ralli */,
 				AA4B6A047BFA3EDF4597E4DB /* Tests */,
+				295948B54D44E4AF8DB36416 /* UITests */,
 				47115CE3E7FD167AA0E4A224 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -298,6 +321,24 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
+		7C8728AB4734F224347A74A4 /* RalliUITests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = F58B93688525EBA374FBBC5E /* Build configuration list for PBXNativeTarget "RalliUITests" */;
+			buildPhases = (
+				49F2EA43B409592B69F4893A /* Sources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				7531F88ED46FED217412D054 /* PBXTargetDependency */,
+			);
+			name = RalliUITests;
+			packageProductDependencies = (
+			);
+			productName = RalliUITests;
+			productReference = A218E545F1E658A9C5B262A8 /* RalliUITests.xctest */;
+			productType = "com.apple.product-type.bundle.ui-testing";
+		};
 		9EDE241FE19A111AC6A4660D /* RalliPersistenceTests */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = EC302CA744F47A4B43434E87 /* Build configuration list for PBXNativeTarget "RalliPersistenceTests" */;
@@ -342,6 +383,11 @@
 				BuildIndependentTargetsInParallel = YES;
 				LastUpgradeCheck = 1430;
 				TargetAttributes = {
+					7C8728AB4734F224347A74A4 = {
+						DevelopmentTeam = "";
+						ProvisioningStyle = Automatic;
+						TestTargetID = A9E1D52BDF6213A3F26CAE0A;
+					};
 					9EDE241FE19A111AC6A4660D = {
 						DevelopmentTeam = "";
 						ProvisioningStyle = Automatic;
@@ -373,6 +419,7 @@
 			targets = (
 				A9E1D52BDF6213A3F26CAE0A /* Ralli */,
 				9EDE241FE19A111AC6A4660D /* RalliPersistenceTests */,
+				7C8728AB4734F224347A74A4 /* RalliUITests */,
 			);
 		};
 /* End PBXProject section */
@@ -392,6 +439,14 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
+		49F2EA43B409592B69F4893A /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				55A5E262A042863546C8DB20 /* RalliUITests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		9FF14A0C4DCB6C3D338B38E6 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -445,6 +500,14 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		7531F88ED46FED217412D054 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = A9E1D52BDF6213A3F26CAE0A /* Ralli */;
+			targetProxy = 1774950D5F7FFEE169701F00 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
 		2F60DC3DC9B79977BEA6B0AB /* InfoPlist.strings */ = {
@@ -586,6 +649,23 @@
 			};
 			name = Release;
 		};
+		53F88AC0D76E6588B1DED3A8 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				GENERATE_INFOPLIST_FILE = YES;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.ralli.RalliUITests;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = Ralli;
+			};
+			name = Debug;
+		};
 		695899EA82AFEF4A482D78BF /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -689,6 +769,23 @@
 			};
 			name = Release;
 		};
+		E8D17CF1DDA8C757D55DF8C1 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				GENERATE_INFOPLIST_FILE = YES;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.ralli.RalliUITests;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = Ralli;
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -715,6 +812,15 @@
 			buildConfigurations = (
 				9B02D929D54FB5E794A5C86E /* Debug */,
 				108245D64238C39D7FC2AE0C /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		F58B93688525EBA374FBBC5E /* Build configuration list for PBXNativeTarget "RalliUITests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				53F88AC0D76E6588B1DED3A8 /* Debug */,
+				E8D17CF1DDA8C757D55DF8C1 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Debug;

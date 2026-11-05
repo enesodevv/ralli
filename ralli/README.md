@@ -106,3 +106,8 @@ Simülatör ek doğrulaması: tercihler kaydedildikten sonra Today önerisi değ
 - **Diller:** en, tr, es, de, fr, it. 500 metin; arayüz, 17 çalışma, animasyon metinleri, gizlilik ve izin açıklamaları. Konuşma tanıma ve sesli ipuçları uygulama dilinin bölgesel sesini kullanır. Kullanılmayan 76 eski metin silindi. `testEveryLanguageMatchesEnglish` eksik anahtar ve biçim hatasını yakalar.
 - App Store metinleri dört yeni dilde de `outputs/yayin/app-store-metinleri.md` içinde.
 - Doğrulama: 18 test geçti; Release (iphoneos) derlemesi uyarısız ve 6 dili içeriyor. Almanca Bugün ve Hakkında ekranları ile solak forehand simülatörde kontrol edildi.
+
+## Kullanıcı testleri — 5 Kasım 2026
+- `RalliUITests` (XCUITest, 13 test) uygulamayı gerçek bir oyuncu gibi kullanır: tanıtım ve tercihler, tanıtımı geçme, arama/filtre/favori, tam seans ve Gelişim kaydı, kaydet-çık ve yeniden açınca geri yükleme, kayıtlı seans varken başka çalışmaya bakma, seansı silme, not yazma/odak yapma/düzenleme/silme, not taslağı, Hakkında ve gizlilik, en büyük yazı boyutu, solak tercihinin hatırlanması, 6 dilde tüm sekmeler.
+- Çalıştırma: `RalliUITests` şeması, bir iPhone simülatöründe (yaklaşık 10 dakika). Testler kendi ayrı veri dosyasını kullanır; gerçek veriye dokunmaz (`-ralli-ui-testing`, `-ralli-reset`, `-ralli-skip-intro`, yalnızca Debug).
+- Testlerin bulduğu ve düzeltilen sorunlar: kayıtlı bir seans varken başka çalışmaların detayı açılmıyordu (artık açılıyor; yalnızca başlatırken "Onu sil ve bunu başlat" sorulur); İngilizcede "1 sessions recorded" dilbilgisi hatası; Bugün ekranındaki "Kendine göre ayarla" iki satıra taşıyordu ("Ayarla"); animasyondaki "Solak" kontrolü kapalıyken düğme olduğu anlaşılmıyordu (açık/kapalı hâli belli bir düğme oldu).

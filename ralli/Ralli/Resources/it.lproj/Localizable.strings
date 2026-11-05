@@ -226,7 +226,7 @@
 "practice.suspend" = "Salva ed esci";
 "practice.discard" = "Scarta la sessione";
 "practice.existing" = "Hai una sessione salvata";
-"practice.existing.body" = "Completa o scarta la sessione salvata prima di iniziarne un’altra.";
+"practice.existing.body" = "Puoi salvare una sola sessione alla volta. Riprendila da Oggi o scartala per iniziare questa.";
 "practice.resumed" = "Ripristinata e in pausa dall’ultimo punto salvato. Riprendi quando sei pronto.";
 "practice.preconditions" = "Prima di iniziare";
 "prerequisite.rally" = "Per chi riesce a sostenere uno scambio comodo. Altrimenti, inizia dalle basi da solo.";
@@ -508,3 +508,5 @@
 "privacy.rights.title" = "Hai il controllo";
 "privacy.rights.body" = "Puoi modificare o eliminare ogni nota o sessione nell’app, cambiare i permessi nelle Impostazioni di iOS o eliminare l’app per rimuovere tutto. Per richieste ai sensi del GDPR, usa il contatto indicato nella pagina App Store di Ralli.";
 "privacy.updated" = "Ultimo aggiornamento: novembre 2026";
+"practice.replace" = "Scartarla e iniziare questa";
+"personal.setup.short" = "Imposta";
