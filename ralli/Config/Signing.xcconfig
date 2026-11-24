@@ -1,0 +1,5 @@
+// Signing for local device builds.
+// Your Apple Developer Team ID stays out of git: put it in Config/Signing.local.xcconfig, e.g.
+//   DEVELOPMENT_TEAM = ABCDE12345
+// That file is gitignored. Without it the project still builds for the simulator.
+#include? "Signing.local.xcconfig"

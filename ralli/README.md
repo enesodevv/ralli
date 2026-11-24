@@ -113,7 +113,7 @@ Simülatör ek doğrulaması: tercihler kaydedildikten sonra Today önerisi değ
 - Testlerin bulduğu ve düzeltilen sorunlar: kayıtlı bir seans varken başka çalışmaların detayı açılmıyordu (artık açılıyor; yalnızca başlatırken "Onu sil ve bunu başlat" sorulur); İngilizcede "1 sessions recorded" dilbilgisi hatası; Bugün ekranındaki "Kendine göre ayarla" iki satıra taşıyordu ("Ayarla"); animasyondaki "Solak" kontrolü kapalıyken düğme olduğu anlaşılmıyordu (açık/kapalı hâli belli bir düğme oldu).
 
 ## Telefondan gelen geri bildirim ve doğal dirsekler — 5 Kasım 2026
-- **Not:** `<eski kopya>` eski bir kopyadır. Güncel proje `Desktop/ten/ralli/Ralli.xcodeproj`. İmza: takım `<TEAM_ID>`, kimlik `com.enesodev.Ralli` (`project.yml`).
+- **İmza:** uygulama kimliği `project.yml` içinde. Apple Developer Team ID git'e girmez: `Config/Signing.local.xcconfig` dosyasına `DEVELOPMENT_TEAM = <takım kimliğin>` yaz (bkz. `Config/Signing.xcconfig`).
 - **Geri kaydırma:** çalışma detayı artık normal sayfa olarak açılır; kenardan kaydırınca geri döner. Seans sürerken bu hareket kapalıdır (yanlışlıkla çıkılmasın diye). Detayda alt sekme çubuğu gizlenir.
 - **Ayarlar:** Bugün ekranındaki ⚙︎ düğmesi. İçinde çalışma tercihleri, el seçimi, sesli ipuçları, dil ve izinler (iOS Ayarlar'a gider), gizlilik politikası, güvenlik ve kaynaklar, sürüm.
 - **"Başlangıç noktan":** soru artık bölüm başlığı; yalnızca iki cevap dokunulabilir görünür.

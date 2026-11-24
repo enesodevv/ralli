@@ -77,6 +77,7 @@
 		408776930DD668AB253E6115 /* RalliApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RalliApp.swift; sourceTree = "<group>"; };
 		41E1B551FCEE5B10189A6206 /* PracticePlan.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PracticePlan.swift; sourceTree = "<group>"; };
 		4EE167ED22ABF39222F11071 /* PracticeVoiceGuide.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PracticeVoiceGuide.swift; sourceTree = "<group>"; };
+		57E64E3D557DF0F19B5B4980 /* Signing.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Signing.xcconfig; sourceTree = "<group>"; };
 		58137D5710693CFAD127DAAD /* StrokeMotionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StrokeMotionView.swift; sourceTree = "<group>"; };
 		5D985451AC536072E12AADDE /* L10n.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = L10n.swift; sourceTree = "<group>"; };
 		628EABBD33ADC2917097E9AD /* es */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = es; path = es.lproj/InfoPlist.strings; sourceTree = "<group>"; };
@@ -193,6 +194,7 @@
 		56303FF5A6532D3DF69B3984 = {
 			isa = PBXGroup;
 			children = (
+				E84743EBE2B0E39C74958561 /* Config */,
 				45595F17078B088B7757AB8E /* Ralli */,
 				AA4B6A047BFA3EDF4597E4DB /* Tests */,
 				295948B54D44E4AF8DB36416 /* UITests */,
@@ -321,6 +323,14 @@
 			path = Journal;
 			sourceTree = "<group>";
 		};
+		E84743EBE2B0E39C74958561 /* Config */ = {
+			isa = PBXGroup;
+			children = (
+				57E64E3D557DF0F19B5B4980 /* Signing.xcconfig */,
+			);
+			path = Config;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -387,16 +397,13 @@
 				LastUpgradeCheck = 1430;
 				TargetAttributes = {
 					7C8728AB4734F224347A74A4 = {
-						DevelopmentTeam = <TEAM_ID>;
 						ProvisioningStyle = Automatic;
 						TestTargetID = A9E1D52BDF6213A3F26CAE0A;
 					};
 					9EDE241FE19A111AC6A4660D = {
-						DevelopmentTeam = <TEAM_ID>;
 						ProvisioningStyle = Automatic;
 					};
 					A9E1D52BDF6213A3F26CAE0A = {
-						DevelopmentTeam = <TEAM_ID>;
 						ProvisioningStyle = Automatic;
 					};
 				};
@@ -545,6 +552,7 @@
 /* Begin XCBuildConfiguration section */
 		067D40D66800B287E68E831F /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 57E64E3D557DF0F19B5B4980 /* Signing.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_ANALYZER_NONNULL = YES;
@@ -580,7 +588,6 @@
 				COPY_PHASE_STRIP = NO;
 				CURRENT_PROJECT_VERSION = 1;
 				DEBUG_INFORMATION_FORMAT = dwarf;
-				DEVELOPMENT_TEAM = <TEAM_ID>;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
@@ -705,6 +712,7 @@
 		};
 		A913A65F9260FC17F081F2AE /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 57E64E3D557DF0F19B5B4980 /* Signing.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_ANALYZER_NONNULL = YES;
@@ -740,7 +748,6 @@
 				COPY_PHASE_STRIP = NO;
 				CURRENT_PROJECT_VERSION = 1;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
-				DEVELOPMENT_TEAM = <TEAM_ID>;
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu11;

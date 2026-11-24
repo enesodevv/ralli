@@ -8,7 +8,9 @@ DerivedData/
 build/
 *.xcresult/
 
-# Local build caches and logs from earlier work
-work/DerivedData/
-work/swift-cache/
+# Local scratch work and logs
+work/
 *.log
+
+# Personal signing (Apple Developer Team ID)
+*.local.xcconfig
